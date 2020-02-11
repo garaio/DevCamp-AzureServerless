@@ -46,7 +46,8 @@ Implement a data storage concept which allows the dynamic definition of properti
 Cosmos DB
 
 ## Hints
-Adation of Frotend-application to changes is optional (it is completely okay to show functionality on Functions test page only).
+* Adation of Frotend-application to changes is optional (it is completely okay to show functionality on Functions test page only)
+* Some data is highly referenced to each other (Projects-Users-Skills-Technologies) - what are the chances and benfits of a graph database ([Cosmos DB Gremlin API](https://docs.microsoft.com/en-us/azure/cosmos-db/graph-introduction))?
 
 # D04: User management & Authentication
 ## Goal
