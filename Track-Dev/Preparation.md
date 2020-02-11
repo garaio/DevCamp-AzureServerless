@@ -19,5 +19,8 @@ Especially when working with Azure Function, either [Visual Studio Code](https:/
 -   [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest)
 -   [Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
 
+# Some relevant online resources
+- [Cloud Design Patterns](https://docs.microsoft.com/en-us/azure/architecture/patterns/)
+
 # Deploy lab to your Azure environment
 Coming soon.
