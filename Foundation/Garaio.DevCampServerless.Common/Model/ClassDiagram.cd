@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Garaio.DevCampServerless.Common.Model.Person">
+    <Position X="12.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAEAABAAAAIAAAAAgAAAAAAAAAAAAAAAAAIAQA=</HashCode>
+      <FileName>Model\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Skills" />
+      <Property Name="Projects" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Garaio.DevCampServerless.Common.Model.Project">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAgAAAAACIAAAQAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Model\Project.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="UsedTechnologies" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Garaio.DevCampServerless.Common.Model.ProjectExperience">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAIAgAAAAAQACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ProjectExperience.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garaio.DevCampServerless.Common.Model.ProjectTechnology">
+    <Position X="15.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAABAAIAAAAA=</HashCode>
+      <FileName>Model\ProjectTechnology.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garaio.DevCampServerless.Common.Model.Skill">
+    <Position X="15.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAABAAAAAIAAAAA=</HashCode>
+      <FileName>Model\Skill.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Garaio.DevCampServerless.Common.Model.Technology">
+    <Position X="15.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAQAAAAAAAAACQAAQAAAAAA=</HashCode>
+      <FileName>Model\Technology.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Links" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Garaio.DevCampServerless.Common.Model.TechnologyLink">
+    <Position X="18.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAgAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Model\TechnologyLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Garaio.DevCampServerless.Common.Model.LinkType">
+    <Position X="21" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAgAAAAAAACA=</HashCode>
+      <FileName>Model\LinkType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Garaio.DevCampServerless.Common.Model.PublishState">
+    <Position X="21" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAKABAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Model\PublishState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Garaio.DevCampServerless.Common.Model.SkillLevel">
+    <Position X="21" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAGAAAQ=</HashCode>
+      <FileName>Model\SkillLevel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Garaio.DevCampServerless.Common.Model.TechnologyType">
+    <Position X="21" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Model\TechnologyType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
