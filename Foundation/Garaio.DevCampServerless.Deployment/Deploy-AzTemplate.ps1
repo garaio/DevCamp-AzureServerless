@@ -69,6 +69,9 @@ else {
 
 Write-Host "Running a $deploymentScope scoped deployment..."
 
+# Check if resource-group already exists
+$ResourceGroupIsNew = (Get-AzResourceGroup -Name $ResourceGroupName -Location $Location -Verbose -ErrorAction SilentlyContinue) -eq $null
+
 $ArtifactsLocationParameter = $TemplateJson | Select-Object -expand 'parameters' -ErrorAction Ignore | Select-Object -Expand '_artifactsLocation' -ErrorAction Ignore
 
 #if the switch is set or the standard parameter is present in the template, upload all artifacts
@@ -175,6 +178,7 @@ function Get-AzTemplateParameters{
 $TemplateParamObject = @{
     resourceNamePrefix = $ResourceNamePrefix
     resourceNameSuffix = $ResourceNameSuffix
+    isInitialDeployment = $ResourceGroupIsNew
 }
 
 # Read ARM template parameters values from file
@@ -190,7 +194,7 @@ Write-Host ($OptionalParameters | Out-String)
 
 # Create the resource group only when it doesn't already exist - and only in RG scoped deployments
 if ($deploymentScope -eq "ResourceGroup") {
-    if ((Get-AzResourceGroup -Name $ResourceGroupName -Location $Location -Verbose -ErrorAction SilentlyContinue) -eq $null) {
+    if ($ResourceGroupIsNew) {
         New-AzResourceGroup -Name $ResourceGroupName -Location $Location -Verbose -Force -ErrorAction Stop
     }
 }

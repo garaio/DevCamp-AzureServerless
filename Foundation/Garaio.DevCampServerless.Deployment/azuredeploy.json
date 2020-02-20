@@ -19,6 +19,10 @@
         "functionsRepoBranch": {
             "type": "string",
             "defaultValue": "master"
+        },
+        "isInitialDeployment": {
+            "type": "bool",
+            "defaultValue": false
         }
     },
     "variables": {
@@ -193,7 +197,7 @@
             "apiVersion": "2019-08-01",
             "name": "[concat(variables('serviceFuncName'), '/web')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('serviceFuncName'))]"
+                "[resourceId('Microsoft.Web/sites/config', variables('serviceFuncName'), 'appsettings')]"
             ],
             "properties": {
                 "repoUrl": "[parameters('functionsRepoUrl')]",
@@ -254,7 +258,7 @@
                 "StorageConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
                 "ScheduleExpression": "[variables('emulatorFuncScheduleExpr')]",
                 "ServiceFuncUrl": "[concat('https://', variables('serviceFuncName'), '.azurewebsites.net/api')]",
-                "ServiceFuncKey": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.emulator]"
+                "ServiceFuncKey": "[if(parameters('isInitialDeployment'), listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.default, listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.emulator)]"
             }
         },
         {
@@ -262,7 +266,7 @@
             "apiVersion": "2019-08-01",
             "name": "[concat(variables('emulatorFuncName'), '/web')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]"
+                "[resourceId('Microsoft.Web/sites/config', variables('emulatorFuncName'), 'appsettings')]"
             ],
             "properties": {
                 "repoUrl": "[parameters('functionsRepoUrl')]",
