@@ -243,7 +243,7 @@
             "apiVersion": "2019-08-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]",
-                "[resourceId('Microsoft.Web/sites', variables('serviceFuncName'))]"
+                "[resourceId('Microsoft.Web/sites/host/functionKeys', variables('serviceFuncName'), 'default', 'emulator')]"
             ],
             "properties": {
                 "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
@@ -254,7 +254,7 @@
                 "StorageConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
                 "ScheduleExpression": "[variables('emulatorFuncScheduleExpr')]",
                 "ServiceFuncUrl": "[concat('https://', variables('serviceFuncName'), '.azurewebsites.net/api')]",
-                "ServiceFuncKey": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.apimanagement]"
+                "ServiceFuncKey": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.emulator]"
             }
         },
         {

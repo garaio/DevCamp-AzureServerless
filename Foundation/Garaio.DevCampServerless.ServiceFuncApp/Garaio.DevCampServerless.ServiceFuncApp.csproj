@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AzureFunctionsVersion>v3</AzureFunctionsVersion>
+    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
