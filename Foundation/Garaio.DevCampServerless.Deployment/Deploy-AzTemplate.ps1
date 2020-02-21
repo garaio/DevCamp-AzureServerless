@@ -16,7 +16,6 @@ Param(
     [switch] $ValidateOnly,
     [string] $DebugOptions = "None",
     [string] $Mode = "Incremental",
-    [string] $DeploymentName = ($ResourceGroupName + '-' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm')),
     [switch] $Dev
 )
 
@@ -175,10 +174,12 @@ function Get-AzTemplateParameters{
 }
 
 # Override some ARM template parameters
+$deploymentType = If ($ResourceGroupIsNew) {"initial"} Else {"regular"}
+
 $TemplateParamObject = @{
     resourceNamePrefix = $ResourceNamePrefix
     resourceNameSuffix = $ResourceNameSuffix
-    isInitialDeployment = $ResourceGroupIsNew
+    deploymentType = $deploymentType
 }
 
 # Read ARM template parameters values from file
@@ -219,7 +220,9 @@ else {
     $ErrorActionPreference = 'Continue' # Switch to Continue" so multiple errors can be formatted and output
     if ($deploymentScope -eq "Subscription") {
         #subscription scoped deployment
-        New-AzDeployment -Name $DeploymentName `
+        $deploymentName = ($ResourceGroupName + '-' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm'))
+
+        New-AzDeployment -Name $deploymentName `
             -Location $Location `
             @TemplateArgs `
             @OptionalParameters `
@@ -227,12 +230,27 @@ else {
             -ErrorVariable ErrorMessages
     }
     else {
-        New-AzResourceGroupDeployment -Name $DeploymentName `
+        $deploymentName = ($ResourceGroupName + '-' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm'))
+
+        New-AzResourceGroupDeployment -Name $deploymentName `
             -ResourceGroupName $ResourceGroupName `
             @TemplateArgs `
             @OptionalParameters `
             -Force -Verbose `
             -ErrorVariable ErrorMessages
+
+        # As some resources cannot deployed within same operation, we call it again
+        if (-not $ErrorMessages -and $ResourceGroupIsNew) {
+            $TemplateArgs['TemplateParameterObject']['deploymentType'] = 'postinitial'
+            $deploymentName = ($ResourceGroupName + '-' + ((Get-Date).ToUniversalTime()).ToString('MMdd-HHmm'))
+            
+            New-AzResourceGroupDeployment -Name $deploymentName `
+            -ResourceGroupName $ResourceGroupName `
+            @TemplateArgs `
+            @OptionalParameters `
+            -Force -Verbose `
+            -ErrorVariable ErrorMessages
+        }
     }
     $ErrorActionPreference = 'Stop' 
     if ($ErrorMessages) {
