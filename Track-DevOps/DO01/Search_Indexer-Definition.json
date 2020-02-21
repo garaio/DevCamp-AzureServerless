@@ -1,0 +1,29 @@
+{
+  "@odata.context": "https://ga-dcs-cs-ref.search.windows.net/$metadata#indexers/$entity",
+  "@odata.etag": "\"0x8D7B71C4C14049F\"",
+  "name": "azuretable-indexer",
+  "description": "",
+  "dataSourceName": "table-technologies",
+  "skillsetName": "azuretable-skillset",
+  "targetIndexName": "azuretable-index",
+  "disabled": null,
+  "schedule": {
+    "interval": "P1D",
+    "startTime": "0001-01-01T00:00:00Z"
+  },
+  "parameters": {
+    "batchSize": null,
+    "maxFailedItems": 0,
+    "maxFailedItemsPerBatch": 0,
+    "base64EncodeKeys": false,
+    "configuration": {}
+  },
+  "fieldMappings": [],
+  "outputFieldMappings": [
+    {
+      "sourceFieldName": "/document/Description/DescriptionDe",
+      "targetFieldName": "DescriptionDe"
+    }
+  ],
+  "cache": null
+}

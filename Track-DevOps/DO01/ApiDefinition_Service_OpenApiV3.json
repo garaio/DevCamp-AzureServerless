@@ -1,0 +1,499 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Service",
+        "description": "Import from \"ga-dcs-service-f-ref\" Function App",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://your_apim_service_name.azure-api.net/api"
+        }
+    ],
+    "paths": {
+        "/search": {
+            "post": {
+                "summary": "GetSearchResults",
+                "operationId": "post-getsearchresults",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "get": {
+                "summary": "GetSearchResults",
+                "operationId": "get-getsearchresults",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            }
+        },
+        "/projects/{key}": {
+            "get": {
+                "summary": "GetProjectEntities",
+                "operationId": "get-getprojectentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "put": {
+                "summary": "UpdateProjectEntities",
+                "operationId": "put-updateprojectentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "guid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Project"
+                            },
+                            "example": {
+                                "customerName": "GARAIO AG",
+                                "projectName": "DevCamp",
+                                "description": "Learn Azure Serverless Solution Development",
+                                "projectUrl": "https://github.com/garaio/DevCamp-AzureServerless",
+                                "iconUrl": "https://picsum.photos/120/120/?image=160",
+                                "status": 1,
+                                "usedTechnologies": [
+                                    {
+                                        "technologyKey": "d23e48cd-4f51-43f8-b343-0e7d3a97a5c6",
+                                        "component": "DevOps-Skills"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                },
+                                "example": {
+                                    "customerName": "GARAIO AG",
+                                    "projectName": "DevCamp",
+                                    "description": "Learn Azure Serverless Solution Development",
+                                    "projectUrl": "https://github.com/garaio/DevCamp-AzureServerless",
+                                    "iconUrl": "https://picsum.photos/120/120/?image=160",
+                                    "status": 1,
+                                    "usedTechnologies": [
+                                        {
+                                            "technologyKey": "d23e48cd-4f51-43f8-b343-0e7d3a97a5c6",
+                                            "component": "DevOps-Skills"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DeleteProjectEntities",
+                "operationId": "delete-deleteprojectentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            }
+        },
+        "/technologies/{key}": {
+            "put": {
+                "summary": "UpdateTechnologyEntities",
+                "operationId": "put-updatetechnologyentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "get": {
+                "summary": "GetTechnologyEntities",
+                "operationId": "get-gettechnologyentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "guid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Technology"
+                                },
+                                "example": {
+                                    "type": 3,
+                                    "name": "Content Delivery Network",
+                                    "description": "Ensure secure, reliable content delivery with broad global reach",
+                                    "productUrl": "https://azure.microsoft.com/en-us/services/cdn/",
+                                    "iconUrl": null,
+                                    "linkedTechnologies": [],
+                                    "rowKey": "00474493-63b3-43c1-8c5e-48059747ce17"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DeleteTechnologyEntities",
+                "operationId": "delete-deletetechnologyentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "summary": "GetUserProfile",
+                "operationId": "get-getuserprofile",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            }
+        },
+        "/persons/{key}": {
+            "get": {
+                "summary": "GetPersonEntities",
+                "operationId": "get-getpersonentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "delete": {
+                "summary": "DeletePersonEntities",
+                "operationId": "delete-deletepersonentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "guid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "put": {
+                "summary": "UpdatePersonEntities",
+                "operationId": "put-updatepersonentities",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            }
+        },
+        "/technologies": {
+            "get": {
+                "summary": "GetAllTechnologyEntities",
+                "operationId": "get-getalltechnologyentities",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "post": {
+                "summary": "CreateTechnologyEntities",
+                "operationId": "post-createtechnologyentities",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            }
+        },
+        "/projects": {
+            "get": {
+                "summary": "GetAllProjectEntities",
+                "operationId": "get-getallprojectentities",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "post": {
+                "summary": "CreateProjectEntities",
+                "operationId": "post-createprojectentities",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Project"
+                            },
+                            "example": {
+                                "customerName": "GARAIO AG",
+                                "projectName": "DevCamp",
+                                "description": "Learn Azure Serverless Solution Development",
+                                "projectUrl": "https://github.com/garaio/DevCamp-AzureServerless",
+                                "iconUrl": "https://picsum.photos/120/120/?image=160",
+                                "status": 1,
+                                "usedTechnologies": [
+                                    {
+                                        "technologyKey": "d23e48cd-4f51-43f8-b343-0e7d3a97a5c6",
+                                        "component": "DevOps-Skills"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                },
+                                "example": {
+                                    "customerName": "GARAIO AG",
+                                    "projectName": "DevCamp",
+                                    "description": "Learn Azure Serverless Solution Development",
+                                    "projectUrl": "https://github.com/garaio/DevCamp-AzureServerless",
+                                    "iconUrl": "https://picsum.photos/120/120/?image=160",
+                                    "status": 1,
+                                    "usedTechnologies": [
+                                        {
+                                            "technologyKey": "d23e48cd-4f51-43f8-b343-0e7d3a97a5c6",
+                                            "component": "DevOps-Skills"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/persons": {
+            "get": {
+                "summary": "GetAllPersonEntities",
+                "operationId": "get-getallpersonentities",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            },
+            "post": {
+                "summary": "CreatePersonEntities",
+                "operationId": "post-createpersonentities",
+                "responses": {
+                    "200": {
+                        "description": null
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Project": {
+                "type": "object",
+                "properties": {
+                    "customerName": {
+                        "type": "string"
+                    },
+                    "projectName": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "projectUrl": {
+                        "type": "string"
+                    },
+                    "iconUrl": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "integer"
+                    },
+                    "usedTechnologies": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "technologyKey",
+                                "component"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "technologyKey": {
+                                    "type": "string"
+                                },
+                                "component": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "example": {
+                    "customerName": "GARAIO AG",
+                    "projectName": "DevCamp",
+                    "description": "Learn Azure Serverless Solution Development",
+                    "projectUrl": "https://github.com/garaio/DevCamp-AzureServerless",
+                    "iconUrl": "https://picsum.photos/120/120/?image=160",
+                    "status": 1,
+                    "usedTechnologies": [
+                        {
+                            "technologyKey": "d23e48cd-4f51-43f8-b343-0e7d3a97a5c6",
+                            "component": "DevOps-Skills"
+                        }
+                    ]
+                }
+            },
+            "Technology": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "productUrl": {
+                        "type": "string"
+                    },
+                    "iconUrl": {},
+                    "linkedTechnologies": {
+                        "type": "array"
+                    },
+                    "rowKey": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "type": 3,
+                    "name": "Content Delivery Network",
+                    "description": "Ensure secure, reliable content delivery with broad global reach",
+                    "productUrl": "https://azure.microsoft.com/en-us/services/cdn/",
+                    "iconUrl": null,
+                    "linkedTechnologies": [],
+                    "rowKey": "00474493-63b3-43c1-8c5e-48059747ce17"
+                }
+            }
+        },
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ]
+}

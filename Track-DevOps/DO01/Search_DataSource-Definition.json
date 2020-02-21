@@ -1,0 +1,17 @@
+{
+  "@odata.context": "https://ga-dcs-cs-ref.search.windows.net/$metadata#datasources/$entity",
+  "@odata.etag": "\"0x8D7B71C4AB40D5F\"",
+  "name": "table-technologies",
+  "description": null,
+  "type": "azuretable",
+  "subtype": null,
+  "credentials": {
+    "connectionString": null
+  },
+  "container": {
+    "name": "technology",
+    "query": null
+  },
+  "dataChangeDetectionPolicy": null,
+  "dataDeletionDetectionPolicy": null
+}

@@ -1,0 +1,31 @@
+{
+  "@odata.context": "https://ga-dcs-cs-ref.search.windows.net/$metadata#skillsets/$entity",
+  "@odata.etag": "\"0x8D7B71C4BBC85DA\"",
+  "name": "azuretable-skillset",
+  "description": "Skillset created from the portal. skillsetName: azuretable-skillset; contentField: Description; enrichmentGranularity: document; knowledgeStoreStorageAccount: ;",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.TranslationSkill",
+      "name": "#1",
+      "description": null,
+      "context": "/document/Description",
+      "defaultFromLanguageCode": null,
+      "defaultToLanguageCode": "de",
+      "suggestedFrom": "en",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/Description"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "translatedText",
+          "targetName": "DescriptionDe"
+        }
+      ]
+    }
+  ],
+  "cognitiveServices": null,
+  "knowledgeStore": null
+}
