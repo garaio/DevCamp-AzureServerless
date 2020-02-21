@@ -16,7 +16,9 @@ You need to have your own Azure subscription to work with this lab. As a GARAIO 
 By default, the MSDN-based subscription is tied to the organisation tenant. You can transfer it to a private directory to not pollute the organisations AD with e.g. App Registrations: [Manual](./Resources/Preparation_MSDN-Subscription.md).
 
 # Demo Application
-Coming soon.
+All code artefacts regarding the basic "Azure Serverless Application" you find in the folder `Foundation`. You can (but don't have to) build your realisations of the challenges based on this. It includes a "on-click-deployable" ARM template with usage as explained in the "Preparation" document of each track.
+
+_Screenshot of application (demo UI) is coming soon._
 
 # Tracks
 ## Dev

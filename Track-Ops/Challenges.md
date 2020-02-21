@@ -11,7 +11,7 @@ Provide a central dashboard which visualize the health and usage of every releva
 Dashboard, Monitor, Application Insights
 
 ## Hints
-(none)
+* The functions emit some custom metrics to Application Insights which provides an easy measuremnt of business activities
 
 # O02: Operating Surveillance
 ## Goal
@@ -35,4 +35,4 @@ Based on your concept you may generate a dashboard for demonstration (including 
 Power BI (Desktop), Log Analytics Workspace, Activity Log
 
 ## Hints
-(none)
+* You can directly generate and export Power BI snippets (M queries) of KUSTO queries in Log Analytics views

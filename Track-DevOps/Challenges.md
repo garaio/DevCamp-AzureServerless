@@ -17,7 +17,8 @@ It is not required that your solution includes everything (e.g. Binaries for Fun
 CLI / PowerShell, Resource Manager
 
 ## Hints
-* As a GARAIO employee you see the reference deployment in the Resource Group `Coming soon` in the Azure Portal. You can check the settings or event export the ARM template (on most services)
+* As a GARAIO employee you see the reference deployment in the Resource Group **`ga-dcs-ref`** in the Azure Portal. You can check the settings or event export the ARM template (on most services or on resource group)
+* The source-code of the functions you find in the directory `Foundation` of this repository
 
 # DO02: Continous Deployment
 ## Goal

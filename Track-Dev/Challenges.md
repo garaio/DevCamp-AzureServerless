@@ -36,7 +36,7 @@ Another interesting functionality could be the extraction of intends from the se
 Cognitive Search (with Skills), LUIS
 
 ## Hints
-Integration in Frotend-application is optional (it is completely okay to show functionality on Functions test page only).
+Integration in Frotend-application is optional (it is completely okay to just demonstrate functionality and concepts on API or Search Explorer).
 
 # D03: Flexible data storage
 ## Goal
@@ -69,7 +69,7 @@ The application shall integrate other systems and data sources to provide valuea
 Function with Graph-Binding, Logic App, Data Factory Pipeline
 
 ## Hints
-* For this lab it is not required to scrap data from [hotframeworks.com](https://hotframeworks.com) automatically (CSV export in repository)
+* For this lab it is not required to scrap data from [hotframeworks.com](https://hotframeworks.com) automatically (CSV exports in folder `D05`)
 * On the GARAIO AG SharePoint you find project sites under: `\<base-url>/sites/solutions-hub/SitePages/Alle-Projekte.aspx`
 
 # D06: Data-processing pipeline
