@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -58,6 +58,8 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             {
                 return new BadRequestResult();
             }
+
+            entity.RowKey = !string.IsNullOrWhiteSpace(entity.RowKey) ? entity.RowKey : Guid.NewGuid().ToString();
 
             var result = await EntityManager.Get<Technology>(log).CreateOrUpdate(entity);
 

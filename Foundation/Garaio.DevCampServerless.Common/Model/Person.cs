@@ -21,11 +21,11 @@ namespace Garaio.DevCampServerless.Common.Model
         /// <summary>
         /// Note: Manually mapped (not persisted on this entity)
         /// </summary>
-        public ICollection<ProjectExperience> Projects { get; set; } = new List<ProjectExperience>();
+        public IList<ProjectExperience> Projects { get; set; } = new List<ProjectExperience>();
 
         /// <summary>
         /// Note: Manually mapped (not persisted on this entity)
         /// </summary>
-        public ICollection<Skill> Skills { get; set; } = new List<Skill>();
+        public IList<Skill> Skills { get; set; } = new List<Skill>();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -22,6 +23,35 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             if (string.IsNullOrWhiteSpace(query))
             {
                 return new BadRequestResult();
+            }
+
+            // Simulate consuming operation (for OPS challenges)
+            // Note: If you are working on DEV challenges you may remove this code-block with no worries!
+            if (int.TryParse(query, out var n))
+            {
+                int count = 0;
+                long a = 2;
+                while (count < n)
+                {
+                    long b = 2;
+                    int prime = 1; // to check if found a prime
+                    while (b * b <= a)
+                    {
+                        if (a % b == 0)
+                        {
+                            prime = 0;
+                            break;
+                        }
+                        b++;
+                    }
+                    if (prime > 0)
+                    {
+                        count++;
+                    }
+                    a++;
+                }
+
+                log.LogDebug($"Just for fun: nth prime number for {n} is {--a}");
             }
 
             var results = new List<SearchResult>();

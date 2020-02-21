@@ -4,7 +4,9 @@ namespace Garaio.DevCampServerless.Common.Model
 {
     public class Project : EntityBase
     {
-        public string Name { get; set; }
+        public string CustomerName { get; set; }
+
+        public string ProjectName { get; set; }
 
         public string Description { get; set; }
 
@@ -18,6 +20,6 @@ namespace Garaio.DevCampServerless.Common.Model
         /// <summary>
         /// Note: Manually mapped (not persisted on this entity)
         /// </summary>
-        public ICollection<ProjectTechnology> UsedTechnologies { get; set; } = new List<ProjectTechnology>();
+        public IList<ProjectTechnology> UsedTechnologies { get; set; } = new List<ProjectTechnology>();
     }
 }

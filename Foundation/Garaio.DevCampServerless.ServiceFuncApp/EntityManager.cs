@@ -20,7 +20,7 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             _log = log ?? throw new ArgumentNullException(nameof(log));
         }
         
-        public async Task<ICollection<T>> GetAllAsync()
+        public async Task<IList<T>> GetAllAsync()
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             }
         }
 
-        public async Task<ICollection<T>> GetWhereAsync(Func<T, bool> predicate)
+        public async Task<IList<T>> GetWhereAsync(Func<T, bool> predicate)
         {
             try
             {

@@ -18,6 +18,6 @@ namespace Garaio.DevCampServerless.Common.Model
         /// <summary>
         /// Note: Manually mapped (not persisted on this entity)
         /// </summary>
-        public ICollection<TechnologyLink> LinkedTechnologies { get; set; } = new List<TechnologyLink>();        
+        public IList<TechnologyLink> LinkedTechnologies { get; set; } = new List<TechnologyLink>();        
     }
 }

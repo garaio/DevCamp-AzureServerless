@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
@@ -59,6 +60,8 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             {
                 return new BadRequestResult();
             }
+
+            entity.RowKey = !string.IsNullOrWhiteSpace(entity.RowKey) ? entity.RowKey : Guid.NewGuid().ToString();
 
             var result = await EntityManager.Get<Person>(log).CreateOrUpdate(entity);
 
