@@ -29,8 +29,8 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
               .RuleFor(x => x.JobTitle, (f, x) => f.Name.JobTitle())
               .RuleFor(x => x.Slogan, (f, x) => f.Hacker.Phrase())
               .RuleFor(x => x.EmployedSince, (f, x) => f.Date.PastOffset(10))
-              .RuleFor(x => x.Skills, (f, x) => Array.Empty<Skill>())
-              .RuleFor(x => x.Projects, (f, x) => Array.Empty<ProjectExperience>());
+              .RuleFor(x => x.Skills, (f, x) => new List<Skill>())
+              .RuleFor(x => x.Projects, (f, x) => new List<ProjectExperience>());
 
         public Faker<Project> Project { get; } = new EntityFaker<Project>()
               .RuleFor(x => x.CustomerName, (f, x) => f.Company.CompanyName())
@@ -38,7 +38,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
               .RuleFor(x => x.Description, (f, x) => f.Rant.Review(x.ProjectName))
               .RuleFor(x => x.ProjectUrl, (f, x) => f.Internet.Url())
               .RuleFor(x => x.IconUrl, (f, x) => f.Image.PicsumUrl(120, 120))
-              .RuleFor(x => x.UsedTechnologies, (f, x) => Array.Empty<ProjectTechnology>());
+              .RuleFor(x => x.UsedTechnologies, (f, x) => new List<ProjectTechnology>());
 
         public Faker<ProjectExperience> ProjectExperience { get; } = new EntityFaker<ProjectExperience>()
               .RuleFor(x => x.PersonKey, (f, x) => null)

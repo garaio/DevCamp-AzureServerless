@@ -60,7 +60,7 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
                 return new BadRequestResult();
             }
             
-            entity.RowKey = !string.IsNullOrWhiteSpace(entity.RowKey) ? entity.RowKey : Guid.NewGuid().ToString();
+            entity.RowKey = !string.IsNullOrWhiteSpace(entity.RowKey) ? entity.RowKey : EntityBase.NewRowKey;
             
             var result = await EntityManager.Get<Project>(log).CreateOrUpdate(entity);
 

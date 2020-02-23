@@ -18,13 +18,18 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
             
             var context = new EmulationContext();
 
-            var steps = Enumerable.Repeat("", Faker.Value.Random.Int(1, 3)).SelectMany(_ => Faker.Value.Random.ListItems(EmulationSteps.Value));
+            // Generate random flow of steps, weighted and sorted by priority
+            var max = EmulationSteps.Value.Max(s => s.Priority) + 1;
+            var steps = Faker.Value.Random.ListItems(EmulationSteps.Value.SelectMany(s => Enumerable.Repeat(s, max - s.Priority)).ToList())
+                .OrderBy(s => s.Priority)
+                .GroupBy(s => s.Id)
+                .Select(g => g.First());
 
             foreach (var step in steps)
             {
                 try
                 {
-                    context = await step(context);
+                    context = await step.Method(context);
                 }
                 catch (Exception e)
                 {

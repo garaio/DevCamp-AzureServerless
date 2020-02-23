@@ -11,8 +11,10 @@ namespace Garaio.DevCampServerless.Common.Model
         public EntityBase()
         {
             PartitionKey = GlobalPartitionKey;
-            RowKey = Guid.NewGuid().ToString();
+            RowKey = NewRowKey;
         }
+        public static string NewRowKey => Guid.NewGuid().ToString();
+
         public override IDictionary<string, EntityProperty> WriteEntity(OperationContext operationContext)
         {
             var results = base.WriteEntity(operationContext);

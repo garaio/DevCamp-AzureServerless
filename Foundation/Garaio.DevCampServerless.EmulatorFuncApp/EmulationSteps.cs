@@ -8,7 +8,7 @@ using Garaio.DevCampServerless.Common.Model;
 
 namespace Garaio.DevCampServerless.EmulatorFuncApp
 {
-    public class EmulationSteps : List<Func<EmulationContext, Task<EmulationContext>>>
+    public class EmulationSteps : List<EmulationStep>
     {
         private readonly Lazy<EntityFaker> _faker;
 
@@ -16,21 +16,26 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
         {
             _faker = faker;
 
-            Add(GetUserProfile);
-            Add(SearchRequest);
-            Add(CalculatePrimeNumber);
+            Add(2, GetUserProfile);
+            Add(2, SearchRequest);
+            Add(3, CalculatePrimeNumber);
 
-            Add(GetAllTechnologies);
+            Add(1, GetAllTechnologies);
 
-            Add(GetAllPersons);
-            Add(CreatePerson);
-            Add(UpdatePerson);
-            Add(DeletePerson);
+            Add(1, GetAllPersons);
+            Add(2, CreatePerson);
+            Add(2, UpdatePerson);
+            Add(3, DeletePerson);
 
-            Add(GetAllProjects);
-            Add(CreateProject);
-            Add(UpdateProject);
-            Add(DeleteProject);
+            Add(1, GetAllProjects);
+            Add(2, CreateProject);
+            Add(2, UpdateProject);
+            Add(3, DeleteProject);
+        }
+
+        public void Add(int priority, Func<EmulationContext, Task<EmulationContext>> method)
+        {
+            Add(new EmulationStep { Priority = priority, Method = method });
         }
 
         private async Task<EmulationContext> GetUserProfile(EmulationContext ec)
@@ -159,15 +164,11 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
         
         private async Task<EmulationContext> DeletePerson(EmulationContext ec)
         {
-            var persons = ec.Entities.OfType<Person>();
-            if (!persons.Any())
-                return ec;
-
-            var person = _faker.Value.PickRandom(persons);
+            var key = _faker.Value.PickRandom(ec.Entities.OfType<Person>().Select(p => p.RowKey).DefaultIfEmpty(EntityBase.NewRowKey));
 
             var result = await Environment.GetEnvironmentVariable(Constants.Configurations.ServiceFuncUrl)
             .AppendPathSegment("persons")
-            .AppendPathSegment($"{person.RowKey}")
+            .AppendPathSegment($"{key}")
             .SetQueryParams(new { code = Environment.GetEnvironmentVariable(Constants.Configurations.ServiceFuncKey) })
             .DeleteAsync();
             
@@ -250,19 +251,24 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
 
         private async Task<EmulationContext> DeleteProject(EmulationContext ec)
         {
-            var projects = ec.Entities.OfType<Project>();
-            if (!projects.Any())
-                return ec;
-
-            var project = _faker.Value.PickRandom(projects);
+            var key = _faker.Value.PickRandom(ec.Entities.OfType<Project>().Select(p => p.RowKey).DefaultIfEmpty(EntityBase.NewRowKey));
 
             var result = await Environment.GetEnvironmentVariable(Constants.Configurations.ServiceFuncUrl)
             .AppendPathSegment("projects")
-            .AppendPathSegment($"{project.RowKey}")
+            .AppendPathSegment($"{key}")
             .SetQueryParams(new { code = Environment.GetEnvironmentVariable(Constants.Configurations.ServiceFuncKey) })
             .DeleteAsync();
 
             return ec;
         }
+    }
+
+    public class EmulationStep
+    {
+        public Guid Id { get; } = Guid.NewGuid();
+
+        public int Priority { get; set; }
+
+        public Func<EmulationContext, Task<EmulationContext>> Method { get; set; }
     }
 }
