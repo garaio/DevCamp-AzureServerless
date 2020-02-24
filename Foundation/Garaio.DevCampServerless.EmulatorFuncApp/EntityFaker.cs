@@ -70,12 +70,15 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
 
             if (technologies.Any())
             {
-                var skills = Skill.Generate(technologies.Count());
+                var technologiesList = technologies.ToList();
+                var max = faker.Random.Bool(0.8f) ? Math.Min(technologiesList.Count, 99) : technologiesList.Count; // Maximal batch-size is 100 (going above this causes a HTTP 500)
+                var number = faker.Random.Int(1, max);
 
-                foreach (var skill in skills)
+                foreach (var technology in faker.Random.ListItems(technologiesList, number))
                 {
+                    var skill = Skill.Generate();
                     skill.PersonKey = person.RowKey;
-                    skill.TechnologyKey = faker.PickRandom(technologies).RowKey;
+                    skill.TechnologyKey = technology.RowKey;
 
                     person.Skills.Add(skill);
                 }
@@ -98,14 +101,17 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
 
             if (projects.Any())
             {
-                var projExp = ProjectExperience.Generate(projects.Count());
+                var projectsList = projects.ToList();
+                var max = faker.Random.Bool(0.8f) ? Math.Min(projectsList.Count, 99) : projectsList.Count; // Maximal batch-size is 100 (going above this causes a HTTP 500)
+                var number = faker.Random.Int(1, max);
 
-                foreach (var project in projExp)
+                foreach (var project in faker.Random.ListItems(projectsList, number))
                 {
-                    project.PersonKey = person.RowKey;
-                    project.ProjectKey = faker.PickRandom(projects).RowKey;
+                    var projExp = ProjectExperience.Generate();
+                    projExp.PersonKey = person.RowKey;
+                    projExp.ProjectKey = project.RowKey;
 
-                    person.Projects.Add(project);
+                    person.Projects.Add(projExp);
                 }
             }
         }
@@ -124,12 +130,15 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
 
             if (technologies.Any())
             {
-                var projTechnologies = ProjectTechnology.Generate(technologies.Count());
-
-                foreach (var projTechnology in projTechnologies)
+                var technologiesList = technologies.ToList();
+                var max = faker.Random.Bool(0.8f) ? Math.Min(technologiesList.Count, 99) : technologiesList.Count; // Maximal batch-size is 100 (going above this causes a HTTP 500)
+                var number = faker.Random.Int(1, max);
+                
+                foreach (var technology in faker.Random.ListItems(technologiesList, number))
                 {
+                    var projTechnology = ProjectTechnology.Generate();
                     projTechnology.ProjectKey = project.RowKey;
-                    projTechnology.TechnologyKey = faker.PickRandom(technologies).RowKey;
+                    projTechnology.TechnologyKey = technology.RowKey;
 
                     project.UsedTechnologies.Add(projTechnology);
                 }
