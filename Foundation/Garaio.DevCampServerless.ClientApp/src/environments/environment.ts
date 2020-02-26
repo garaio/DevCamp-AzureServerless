@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://ga-dcs-service-f-ref.azurewebsites.net/api',
-  apiAuthCode: '5H6EfkvwNzQQd930WuHQLpPs7tCA30tF5BVPAllCfU6aknta2uyouQ=='
+  apiBaseUrl: 'http://localhost:7071/api',
+  apiAuthCode: ''
 };
 
 /*
