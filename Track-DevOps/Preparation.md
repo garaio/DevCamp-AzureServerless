@@ -27,7 +27,7 @@ For the simplified setup of a service connection (to deploy form DevOps into Res
 - [Azure PowerShell Reference](https://docs.microsoft.com/en-us/powershell/module/az.resources/?view=azps-3.4.0)
 
 # Access reference deployment
-As a GARAIO employee you see the reference deployment in the Resource Group **`ga-dcs-ref`** in the Azure Portal. You only have read-rights there so everyone has a stable basis to work with.
+As a GARAIO employee you see the reference deployment in the Resource Group **`ga-dcs-ref`** in the Azure Portal. You only have read-rights there so everyone has a stable basis to work with. Additionally you can access and use the demo-application available with this URL: **`https://gadcssaref.z6.web.core.windows.net`** (only working during the DevCamp and without guarantee).
 
 # Notes to work on challenges
 * There is a possible (but not complete) approach for a deployment in the folder `Foundation`. You can cheat and use that as basis, but consider that it does not completely represents the "reference deployment" and it is not necessarily the best solution for this challenge.
