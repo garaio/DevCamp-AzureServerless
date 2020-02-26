@@ -1,0 +1,129 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title w-100" id="myModalLabel">{{ heading }}</h4>
+    </div>
+
+    <div class="modal-body">
+      <form #personForm="ngForm">
+        <div class="md-form">
+          <input type="text" id="firstname" name="firstname" class="form-control" [(ngModel)]="person.firstname" mdbInput mdbValidate [validateSuccess]="false" #firstname="ngModel" required>
+          <label for="firstname">Firstname</label>
+          <mdb-error *ngIf="firstname && firstname.invalid && (firstname.dirty || firstname.touched)">Input is required</mdb-error>
+        </div>
+
+        <div class="md-form">
+            <input type="text" id="lastname" name="lastname" class="form-control" [(ngModel)]="person.lastname" mdbInput mdbValidate [validateSuccess]="false" #lastname="ngModel" required>
+            <label for="lastname">Lastname</label>
+            <mdb-error *ngIf="lastname && lastname.invalid && (lastname.dirty || lastname.touched)">Input is required</mdb-error>
+          </div>
+
+        <div class="md-form">
+          <input type="text" id="jobTitle" name="jobTitle" class="form-control" [(ngModel)]="person.jobTitle" mdbInput mdbValidate [validateSuccess]="false" #jobTitle="ngModel" required>
+          <label for="jobTitle">Job Title</label>
+          <mdb-error *ngIf="jobTitle && jobTitle.invalid && (jobTitle.dirty || jobTitle.touched)">Input is required</mdb-error>
+        </div>
+  
+        <div class="md-form">
+          <textarea type="text" id="slogan" name="slogan" class="md-textarea form-control" [(ngModel)]="person.slogan" mdbInput mdbValidate [validateSuccess]="false" #slogan="ngModel"></textarea>
+          <label for="slogan">Slogan</label>
+        </div>
+
+        <div class="md-form">
+          <input type="text" id="employedSince" name="employedSince" class="md-textarea form-control" [(ngModel)]="person.employedSince" mdbInput mdbValidate required [pattern]="'[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}(T.*)?'" [validateSuccess]="false" #employedSince="ngModel">
+          <label for="employedSince">Employed Since</label>
+          <mdb-error *ngIf="employedSince && employedSince.invalid && (employedSince.dirty || employedSince.touched)">Input is invalid</mdb-error>
+        </div>
+
+        <div class="md-form">
+            <table id="skills" class="table table-striped table-responsive-md btn-table" mdbTable bordered="true" small="true" >
+              <thead style="background-color: transparent">
+                <tr>
+                  <th>Technology</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
+          
+              <tbody>
+                <tr *ngFor="let skill of person.skills">
+                  <th scope="row">{{ getTechnologyName(skill.technologyKey) }}</th>
+                  <td>{{ getSkillLevelName(skill.level) }}</td>
+                  <td>
+                    <a (click)="onDeleteSkill(skill)"><mdb-icon fas icon="trash"></mdb-icon></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          <div class="row mt-2">
+            <div class="col-md-5">
+              <select id="newSkillTechnologyKey" class="browser-default custom-select" #newSkillTechnologyKey>
+                <option *ngFor="let opt of technologies" [value]="opt.rowKey">{{opt.name}}</option>
+              </select>
+            </div>
+            <div class="col-md-5">
+              <select id="newSkillLevel" class="browser-default custom-select" #newSkillLevel>
+                <option *ngFor="let opt of skillLevelOptions" [value]="opt">{{getSkillLevelName(opt)}}</option>
+              </select>
+            </div>
+            <div class="col-md-2 mt-2">
+              <a (click)="onAddSkill(newSkillTechnologyKey.value, newSkillLevel.value)"><mdb-icon fas icon="plus-circle"></mdb-icon></a>
+            </div>
+          </div>          
+        </div>
+
+        <div class="md-form">
+          <table id="projects" class="table table-striped table-responsive-md btn-table" mdbTable bordered="true" small="true" >
+            <thead style="background-color: transparent">
+              <tr>
+                <th>Project</th>
+                <th>Role</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+        
+            <tbody>
+              <tr *ngFor="let project of person.projects">
+                <th scope="row">{{ getProjectName(project.projectKey) }}</th>
+                <td>{{ project.roleInProject }}</td>
+                <td>{{ project.description }}</td>
+                <td>
+                  <a (click)="onDeleteProjectExperience(project)"><mdb-icon fas icon="trash"></mdb-icon></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <select id="newExpProjectKey" class="browser-default custom-select" #newExpProjectKey>
+              <option *ngFor="let opt of projects" [value]="opt.rowKey">{{getProjectName(opt.rowKey)}}</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="newExpRole" class="md-textarea form-control" mdbInput #newExpRole>
+            <label for="newExpDescription" class="ml-3">Role In Project</label>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-md-10">
+            <input type="text" id="newExpDescription" class="md-textarea form-control" mdbInput #newExpDescription>
+            <label for="newExpDescription" class="ml-3">Description</label>
+          </div>
+          <div class="col-md-2 mt-2">
+            <a (click)="onAddProjectExperience(newExpProjectKey.value, newExpRole.value, newExpDescription.value)"><mdb-icon fas icon="plus-circle"></mdb-icon></a>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" mdbBtn color="white" class="black-text waves-light" aria-label="Close" (click)="modalRef.hide()"
+        mdbWavesEffect>Close</button>
+      <button type="button" mdbBtn color="red" class="relative waves-light" mdbWavesEffect (click)="onSave()">Save</button>
+    </div>
+  </div>
