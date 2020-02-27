@@ -1,0 +1,28 @@
+<div class="z-depth-1">
+    <table class="table table-striped table-responsive-md btn-table" mdbTable borderless="true" >
+      <thead class="blue lighten-4">
+        <tr>
+          <th>Icon</th>
+          <th>Id</th>
+          <th>Type</th>
+          <th>Name</th>
+          <th>URL</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let technology of technologies; trackBy: trackByFn">
+          <td><img *ngIf="!!technology.iconUrl" [src]="technology.iconUrl" class="img-fluid" alt="Responsive image" style="height: 15px"></td>
+          <th scope="row">{{ technology.rowKey }}</th>
+          <td>{{ getTechnologyTypeName(technology.type) }}</td>
+          <td>{{ technology.name }}</td>
+          <td>{{ technology.productUrl }}</td>
+          <td>
+            <a (click)="onEdit(technology)" class="mr-2"><mdb-icon fas icon="edit"></mdb-icon></a>
+            <a (click)="onDelete(technology)"><mdb-icon fas icon="trash"></mdb-icon></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

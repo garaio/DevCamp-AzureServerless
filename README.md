@@ -18,7 +18,10 @@ By default, the MSDN-based subscription is tied to the organisation tenant. You 
 # Demo Application
 All code artefacts regarding the basic "Azure Serverless Application" you find in the folder `Foundation`. You can (but don't have to) build your realisations of the challenges based on this. It includes a "on-click-deployable" ARM template with usage as explained in the "Preparation" document of each track.
 
-_Screenshot of application (demo UI) is coming soon._
+![](./Resources/LabDemoUI-Overview.png)
+![](./Resources/LabDemoUI-Persons.png)
+![](./Resources/LabDemoUI-Projects.png)
+![](./Resources/LabDemoUI-Technologies.png)
 
 # Tracks
 ## Dev

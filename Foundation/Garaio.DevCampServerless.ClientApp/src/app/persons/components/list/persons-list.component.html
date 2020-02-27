@@ -1,0 +1,30 @@
+<div class="z-depth-1">
+    <table class="table table-striped table-responsive-md btn-table" mdbTable borderless="true" >
+      <thead class="blue lighten-4">
+        <tr>
+          <th>Id</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Job Title</th>
+          <th>Employed Since</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let person of persons; trackBy: trackByFn">
+          <th scope="row">{{ person.rowKey }}</th>
+          <td>{{ person.firstname }}</td>
+          <td>{{ person.lastname }}</td>
+          <td>{{ person.jobTitle }}</td>
+          <td>{{ person.employedSince | date:'yyyy-MM-dd' }}</td>
+          <td>{{ getStatusName(person.status) }}</td>
+          <td>
+            <a (click)="onEdit(person)" class="mr-2"><mdb-icon fas icon="edit"></mdb-icon></a>
+            <a (click)="onDelete(person)"><mdb-icon fas icon="trash"></mdb-icon></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

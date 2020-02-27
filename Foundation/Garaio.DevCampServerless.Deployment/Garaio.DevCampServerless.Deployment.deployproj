@@ -25,6 +25,7 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <Content Include="azuredeploy.parameters.json" />
+    <None Include="blobs\%24web.zip" />
     <None Include="Deploy-AzTemplate.ps1" />
     <None Include="Deploy-WithLogin.ps1" />
     <None Include="Deployment.targets">

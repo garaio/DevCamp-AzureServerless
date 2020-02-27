@@ -14,7 +14,8 @@ All challenges of this lab are focused to this component. It mainly provides a s
 This is just a utility function to initialize some data (seeding) and to simulate usage by periodically calling the REST API of the service function. It is not foreseen to do anything with this function when working on the challenges.
 
 ### Web Application
-_coming soon_
+The folder `Garaio.DevCampServerless.ClientApp` contains a very simple Single Page Application realized with Angular and the free template from [MDBootstrap](https://mdbootstrap.com/docs/angular/).
+This Demo UI consumes all API methods provided by the Service Function App and allows the implementation and testing of the challenges (especially those regarding Search and Authentication functionality). Its is possible but not intended by the challenges to adjust and extend functionality in this application.
 
 ## Data Model
 ![DataModel](./Resources/DataModel.png)
