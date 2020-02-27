@@ -31,6 +31,14 @@
             "metadata": {
                 "description": "This setting allows to handle issues with resource dependencies (e.g. https://stackoverflow.com/questions/59967186)"
             }
+        },
+        "serviceApiKeyEmulator": {
+            "type": "securestring",
+            "defaultValue": "78d9b775-6ec8-4a6c-9ca9-f3e1affcd67d"
+        },
+        "serviceApiKeyClient": {
+            "type": "securestring",
+            "defaultValue": "bada7656-1856-47b7-b0e8-c3c48d7a8e3d"
         }
     },
     "variables": {
@@ -200,25 +208,25 @@
         {
             "type": "Microsoft.Web/sites/host/functionKeys",
             "name": "[concat(variables('serviceFuncName'), '/default/emulator')]",
-            "condition": "[equals(parameters('deploymentType'), 'initial')]",
             "apiVersion": "2019-08-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites/sourcecontrols', variables('serviceFuncName'), 'web')]"
             ],
             "properties": {
-                "name": "emulator"
+                "name": "emulator",
+                "value": "[parameters('serviceApiKeyEmulator')]"
             }
         },
         {
             "type": "Microsoft.Web/sites/host/functionKeys",
             "name": "[concat(variables('serviceFuncName'), '/default/client')]",
-            "condition": "[equals(parameters('deploymentType'), 'initial')]",
             "apiVersion": "2019-08-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites/sourcecontrols', variables('serviceFuncName'), 'web')]"
             ],
             "properties": {
-                "name": "client"
+                "name": "client",
+                "value": "[parameters('serviceApiKeyClient')]"
             }
         },
         {
@@ -261,31 +269,7 @@
                 "clientAffinityEnabled": true,
                 "containerSize": 1536,
                 "dailyMemoryTimeQuota": 0,
-                "httpsOnly": true,
-                "siteConfig": {
-                    "appSettings": [
-                        {
-                            "name": "AzureWebJobsStorage",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
-                        },
-                        {
-                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY ",
-                            "value": "[reference(resourceId('Microsoft.Insights/components/', variables('appInsightsName')), '2015-05-01').InstrumentationKey]"
-                        },
-                        {
-                            "name": "FUNCTIONS_EXTENSION_VERSION",
-                            "value": "~2"
-                        },
-                        {
-                            "name": "WEBSITE_TIME_ZONE",
-                            "value": "W. Europe Standard Time"
-                        },
-                        {
-                            "name": "PROJECT",
-                            "value": "[variables('emulatorFuncProjectPath')]"
-                        }
-                    ]
-                }
+                "httpsOnly": true
             },
             "identity": {
                 "type": "SystemAssigned"
@@ -299,7 +283,7 @@
         {
             "type": "Microsoft.Web/sites/config",
             "name": "[concat(variables('emulatorFuncName'), '/appsettings')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'initial'))]",
+            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-08-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]",
@@ -315,8 +299,8 @@
                 "StorageConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
                 "ScheduleExpression": "[variables('emulatorFuncScheduleExpr')]",
                 "ServiceFuncUrl": "[concat('https://', variables('serviceFuncName'), '.azurewebsites.net/api')]",
-                "ServiceFuncKeyEmulator": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.emulator]",
-                "ServiceFuncKeyClient": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.client]",
+                "ServiceFuncKeyEmulator": "[parameters('serviceApiKeyEmulator')]",
+                "ServiceFuncKeyClient": "[parameters('serviceApiKeyClient')]",
                 "RepoUrl": "[parameters('functionsRepoUrl')]",
                 "RepoBranch": "[parameters('functionsRepoBranch')]",
                 "RepoClientAppPackagePattern": "[variables('clientAppPackagePattern')]"
@@ -328,7 +312,7 @@
             "condition": "[equals(parameters('deploymentType'), 'initial')]",
             "apiVersion": "2019-08-01",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]"
+                "[resourceId('Microsoft.Web/sites/config', variables('emulatorFuncName'), 'appsettings')]"
             ],
             "properties": {
                 "repoUrl": "[parameters('functionsRepoUrl')]",
