@@ -9,7 +9,12 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp
             public const string StorageConnectionString = nameof(StorageConnectionString);
             public const string ScheduleExpression = nameof(ScheduleExpression);
             public const string ServiceFuncUrl = nameof(ServiceFuncUrl);
-            public const string ServiceFuncKey = nameof(ServiceFuncKey);
+            public const string ServiceFuncKeyEmulator = nameof(ServiceFuncKeyEmulator);
+            public const string ServiceFuncKeyClient = nameof(ServiceFuncKeyClient);
+
+            public const string RepoUrl = nameof(RepoUrl);
+            public const string RepoBranch = nameof(RepoBranch);
+            public const string RepoClientAppPackagePattern = nameof(RepoClientAppPackagePattern);
         }
 
         public static class Metrics

@@ -43,6 +43,8 @@
         "emulatorFuncScheduleExpr": "0 */5 6-20 * * 1-6",
         "emulatorFuncProjectPath": "Foundation/Garaio.DevCampServerless.EmulatorFuncApp",
 
+        "clientAppPackagePattern": "/raw/{0}/Foundation/Garaio.DevCampServerless.Deployment/blobs/%24web.zip",
+
         "blobContainerConfig": "config",
         "storageAccountName": "[replace(concat(parameters('resourceNamePrefix'), '-', 'sa', '-', parameters('resourceNameSuffix')), '-', '')]",
         "storageAccountBlobs": [
@@ -208,6 +210,18 @@
             }
         },
         {
+            "type": "Microsoft.Web/sites/host/functionKeys",
+            "name": "[concat(variables('serviceFuncName'), '/default/client')]",
+            "condition": "[equals(parameters('deploymentType'), 'initial')]",
+            "apiVersion": "2019-08-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites/sourcecontrols', variables('serviceFuncName'), 'web')]"
+            ],
+            "properties": {
+                "name": "client"
+            }
+        },
+        {
             "type": "Microsoft.Web/sites/sourcecontrols",
             "name": "[concat(variables('serviceFuncName'), '/web')]",
             "condition": "[equals(parameters('deploymentType'), 'initial')]",
@@ -289,7 +303,8 @@
             "apiVersion": "2019-08-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]",
-                "[resourceId('Microsoft.Web/sites/host/functionKeys', variables('serviceFuncName'), 'default', 'emulator')]"
+                "[resourceId('Microsoft.Web/sites/host/functionKeys', variables('serviceFuncName'), 'default', 'emulator')]",
+                "[resourceId('Microsoft.Web/sites/host/functionKeys', variables('serviceFuncName'), 'default', 'client')]"
             ],
             "properties": {
                 "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
@@ -300,7 +315,11 @@
                 "StorageConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]",
                 "ScheduleExpression": "[variables('emulatorFuncScheduleExpr')]",
                 "ServiceFuncUrl": "[concat('https://', variables('serviceFuncName'), '.azurewebsites.net/api')]",
-                "ServiceFuncKey": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.emulator]"
+                "ServiceFuncKeyEmulator": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.emulator]",
+                "ServiceFuncKeyClient": "[listkeys(concat(resourceId('Microsoft.Web/sites', variables('serviceFuncName')), '/host/default/'),'2016-08-01').functionKeys.client]",
+                "RepoUrl": "[parameters('functionsRepoUrl')]",
+                "RepoBranch": "[parameters('functionsRepoBranch')]",
+                "RepoClientAppPackagePattern": "[variables('clientAppPackagePattern')]"
             }
         },
         {
