@@ -6,6 +6,6 @@ $SubscriptionId = Read-Host -Prompt 'Enter id of subscription you want to use fo
 
 Set-AzContext -SubscriptionId $SubscriptionId
 
-& ((Split-Path $MyInvocation.InvocationName) + ".\Deploy-AzTemplate.ps1")
+& ((Split-Path '$($MyInvocation.InvocationName)') + ".\Deploy-AzTemplate.ps1")
 
 Read-Host -Prompt "Press Enter to exit"
