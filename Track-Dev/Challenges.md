@@ -6,6 +6,7 @@
 1. [D05 - Data-integrations](#d05-data-integrations)
 1. [D06 - Data-processing pipeline](#d06-data-processing-pipeline)
 1. [D07 - Security hardening](#d07-security-hardening)
+1. [D08 - Improved SPA-Provisioning](#d08-improved-spa-provisioning)
 
 # D01: Provide and manage API
 ## Goal
@@ -93,3 +94,14 @@ Key Vault, Advisor
 
 ## Hints
 This challenge is more reasonable (and challenging) when implemented after some other challenges in this track. Even more interesting on the basis of the DevOps basic challenge.
+
+# D08: Improved SPA-Provisioning
+## Goal
+The provisioning of the Demo UI (as Angular-based Single Page Application) with the capabilities of the Storage Account lacks the support of client side routing functionality. As soon as a sub-route is established, the application cannot be reloaded anymore. As this is a crucial functionality (e.g. to share links) a solution is needed to resolve this problem.
+Additionally you may provide a solution to use a custom domain or subdomain to access the application.
+
+## Potential Azure Services
+CDN, DNS Zone
+
+## Hints
+To implement and test the custom domain functionality you need to have such a domain available.

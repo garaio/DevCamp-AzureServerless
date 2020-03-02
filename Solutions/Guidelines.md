@@ -1,6 +1,6 @@
 # Guidelines
 Please create a subfolder following this pattern:
 
-> \<ID of Challenge>-\<Your name or alias> (Example: A01-jsc)
+> \<ID of Challenge>-\<Summary of the solution> (Example: A01-Multi-tenany-user-management)
 
 Please include a readme file.
