@@ -1,0 +1,12 @@
+
+<app-navigation></app-navigation>
+
+<main [ngClass]="{'py-0 px-0 my-0 mx-0': specialPage}"  class="mx-lg-5" >
+    
+  <div class="mt-5">
+    <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+    <router-outlet *ngIf="!isIframe"></router-outlet>
+  </div>
+</main>
+
+<app-footer></app-footer>
