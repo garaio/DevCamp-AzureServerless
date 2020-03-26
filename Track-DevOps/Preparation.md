@@ -31,4 +31,4 @@ As a GARAIO employee you see the reference deployment in the Resource Group **`g
 
 # Notes to work on challenges
 * There is a possible (but not complete) approach for a deployment in the folder `Foundation`. You can cheat and use that as basis, but consider that it does not completely represents the "reference deployment" and it is not necessarily the best solution for this challenge.
-* There is also a small [architecture documentation](..\Foundation\README.md) in the same folder.
+* There is also a small [architecture documentation](../Foundation/README.md) in the same folder.

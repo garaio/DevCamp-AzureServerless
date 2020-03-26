@@ -24,7 +24,7 @@ Especially when working with Azure Function, either [Visual Studio Code](https:/
 
 # Deploy lab to your Azure environment
 1. Clone the repository to your local system with [Azure PowerShell](https://github.com/Azure/azure-powershell#installation) installed
-1. Run this PowerShell script which provides a guided installation into your subscription: [`Foundation\Garaio.DevCampServerless.Deployment\Deploy-WithLogin.ps1`](..\Foundation\Garaio.DevCampServerless.Deployment\Deploy-WithLogin.ps1). You have to enter a suffix to be appended to the name of all Azure services and its URL's which have to be unique. It is recommended to use an abbreviation of your name (e.g. John Wayne -> jwa).
+1. Run this PowerShell script which provides a guided installation into your subscription: [`Foundation\Garaio.DevCampServerless.Deployment\Deploy-WithLogin.ps1`](../Foundation/Garaio.DevCampServerless.Deployment/Deploy-WithLogin.ps1). You have to enter a suffix to be appended to the name of all Azure services and its URL's which have to be unique. It is recommended to use an abbreviation of your name (e.g. John Wayne -> jwa).
 1. Wait some minutes after the deployment completed (the functions are automatically built and provisionioned)
 1. The components including the function's API is ready to use and the demo-application is available composing this URL: **`https://gadcssa{YOUR-SUFFIX}.z6.web.core.windows.net`**
 
@@ -32,6 +32,6 @@ _Note: The URL looks different when you deploy to another Azure Region. In case 
 
 # Notes to work on challenges
 * The deployed Azure components are not connected or bound to the initial deployment source and won't get updated by others
-* You can start by forking the solution in the folder `Foundation` or on a complete fresh basis. There is a small [architecture documentation](..\Foundation\README.md).
+* You can start by forking the solution in the folder `Foundation` or on a complete fresh basis. There is a small [architecture documentation](../Foundation/README.md).
 * Functions can be deployed (and updated) directly from the recommended IDE's (with according extensions)
 * There is a function which simulates usage by manipulating the data. This can be usefull but also be annoying for your work. In the latter situation you can easily stop it by stopping the function in the Azure Portal
