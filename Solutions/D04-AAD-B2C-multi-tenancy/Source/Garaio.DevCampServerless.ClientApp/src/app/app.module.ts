@@ -5,8 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MsalModule, MsalInterceptor } from '@azure/msal-angular';
-import { LogLevel } from 'msal';
+import { MsalModule, MsalInterceptor, MsalService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR } from '@azure/msal-angular';
 
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
@@ -20,17 +19,6 @@ import { ProjectsModule } from './projects/projects.module';
 import { TechnologiesModule } from './technologies/technologies.module';
 import { PersonsModule } from './persons/persons.module';
 
-// Logger callback for MSAL
-export function loggerCallback(level: LogLevel, message: string, containsPii: boolean) {
-  if (environment.production) {
-    if (level > LogLevel.Warning || containsPii) { // Note: PII means 'Personal Identity Information'
-      return;
-    }
-  }
-
-  console.log(message);
-}
-
 @NgModule({
   declarations: [
     AppComponent
@@ -39,19 +27,7 @@ export function loggerCallback(level: LogLevel, message: string, containsPii: bo
     AgmCoreModule.forRoot({
       apiKey: ''
     }),
-    // Note: The properties of this configuration are a bit re-structured in next - not yet official - version (they can be easily remapped)
-    MsalModule.forRoot({
-      authority: environment.authLoginAuthority,
-      clientID: environment.authClientId,
-      validateAuthority: false,
-      consentScopes: environment.authScopes,
-      protectedResourceMap: [[environment.apiBaseUrl, environment.authScopes]],
-      redirectUri: environment.authRedirectUri,
-      popUp: false,
-      logger: loggerCallback,
-      level: LogLevel.Verbose,
-      navigateToLoginRequestUrl: true
-    }),
+    MsalModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -69,11 +45,33 @@ export function loggerCallback(level: LogLevel, message: string, containsPii: bo
 
     AppRoutes
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: MsalInterceptor,
-    multi: true
-  }],
+  providers: [MsalService,
+    {
+      provide: MSAL_CONFIG,
+      useFactory: () => ({
+        auth: {
+          authority: environment.authLoginAuthority,
+          clientId: environment.authClientId,
+          validateAuthority: false,
+          redirectUri: environment.authRedirectUri,
+          navigateToLoginRequestUrl: true
+        }
+      })
+    },
+    {
+      provide: MSAL_CONFIG_ANGULAR,
+      useFactory: () => ({
+        consentScopes: environment.authScopes,
+        popUp: false,
+        protectedResourceMap: [[environment.apiBaseUrl, environment.authScopes]]
+      })
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
 })

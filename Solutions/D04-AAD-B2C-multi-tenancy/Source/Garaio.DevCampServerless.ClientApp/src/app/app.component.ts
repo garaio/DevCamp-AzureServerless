@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { BroadcastService, MsalService } from '@azure/msal-angular';
 import { Subscription } from 'rxjs/Subscription';
-import { UserAgentApplication, AuthError, AuthResponse } from 'msal';
+import { UserAgentApplication, AuthError, AuthResponse, LogLevel, Logger } from 'msal';
 
 import { environment } from 'src/environments/environment';
 
@@ -46,13 +46,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
       this.specialPage = this.specialPages.indexOf(this.currentUrl) !== -1;
     });
-
   }
 
   ngOnInit(): void {
     this.isIframe = window !== window.parent && !window.opener;
 
-    this.checkAccount();
+    this.authService.handleRedirectCallback((authError, response) => {
+      if (authError) {
+        console.error('Redirect Error: ', authError.errorMessage);
+        return;
+      }
+
+      console.log('Redirect Success: ', response);
+    });
+
+    this.authService.setLogger(new Logger(this.loggerCallback));
 
     this.authSvcSub.add(this.broadcastService.subscribe('msal:loginSuccess', () => {
       this.checkAccount();
@@ -63,6 +71,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authSvcSub.add(this.broadcastService.subscribe('msal:acquireTokenFailure', (error: any) => {
       this.handleAuthError(error);
     }));
+
+    this.checkAccount();
   }
 
   ngOnDestroy() {
@@ -72,7 +82,21 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   checkAccount() {
-    this.loggedIn = !!this.authService.getUser();
+    const account = this.authService.getAccount();
+
+    console.log(account || 'No authentication data available');
+
+    this.loggedIn = !!account;
+  }
+
+  loggerCallback(level: LogLevel, message: string, containsPii: boolean) {
+    if (environment.production) {
+      if (level > LogLevel.Warning || containsPii) { // Note: PII means 'Personal Identity Information'
+        return;
+      }
+    }
+
+    console.log(message);
   }
 
   handleAuthError(error: any) {
@@ -80,21 +104,29 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const storage = this.authService.getCacheStorage();
-    const authError: string = storage.getItem('msal.login.error');
+    // See https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-handling-exceptions?tabs=javascript
+    let authError = error as AuthError;
+    if (!!!authError && error && error.error) {
+      authError = new AuthError(error.error, error.errorDesc);
+    }
+    console.log(authError);
 
-    if ((authError && authError.indexOf('AADB2C90118') > -1) ||
-        (error && error.errorDesc && error.errorDesc.indexOf('AADB2C90118') !== -1)) {
+    const storage = this.authService.getCacheStorage();
+    const storageError: string = storage.getItem('msal.login.error');
+
+    if ((storageError && storageError.indexOf('AADB2C90118') > -1) ||
+        (authError.errorMessage && authError.errorMessage.indexOf('AADB2C90118') !== -1)) {
       console.log('Reset Password requested');
       this.startResetPasswordFlow();
     // tslint:disable-next-line:max-line-length
-    } else if (error && error.error === 'popup_window_error' && error.errorDesc && error.errorDesc.startsWith('Error opening popup window')) {
+    } else if (authError.errorCode === 'popup_window_error' && authError.errorMessage && authError.errorMessage.startsWith('Error opening popup window')) {
       this.authService.loginRedirect();
-    } else if (this.authService.loginInProgress() === true) {
+    } else if (this.authService.getLoginInProgress() === true) {
       console.log('Login is in progress');
-    } else if (error && error.error === 'user_login_error' && error.errorDesc && error.errorDesc.startsWith('User login is required')) {
+    // tslint:disable-next-line:max-line-length
+    } else if (authError.errorCode === 'user_login_error' && authError.errorMessage && authError.errorMessage.startsWith('User login is required')) {
       this.authService.loginRedirect();
-    } else if (error && error.error === 'user_cancelled') {
+    } else if (authError.errorCode === 'user_cancelled') {
       this.authService.loginRedirect();
     } else {
       console.log(error);
@@ -112,6 +144,8 @@ export class AppComponent implements OnInit, OnDestroy {
         navigateToLoginRequestUrl: true
       }
     });
+
+    resetAuthService.setLogger(new Logger(this.loggerCallback));
 
     resetAuthService.handleRedirectCallback((authErr: AuthError, _response?: AuthResponse) => {
       if (authErr === null) {
