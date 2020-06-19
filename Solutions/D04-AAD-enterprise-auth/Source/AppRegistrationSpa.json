@@ -1,0 +1,88 @@
+{
+	"id": "aa690c8e-0000-0000-0000-9793b0a19a18",
+	"acceptMappedClaims": null,
+	"accessTokenAcceptedVersion": null,
+	"addIns": [],
+	"allowPublicClient": null,
+	"appId": "9317ca9f-0000-0000-0000-9b086409e308",
+	"appRoles": [],
+	"oauth2AllowUrlPathMatching": false,
+	"createdDateTime": "2020-06-18T14:06:51Z",
+	"groupMembershipClaims": null,
+	"identifierUris": [],
+	"informationalUrls": {
+		"termsOfService": null,
+		"support": null,
+		"privacy": null,
+		"marketing": null
+	},
+	"keyCredentials": [],
+	"knownClientApplications": [],
+	"logoUrl": null,
+	"logoutUrl": null,
+	"name": "GARAIO DevCamp AAD SPA",
+	"oauth2AllowIdTokenImplicitFlow": true,
+	"oauth2AllowImplicitFlow": true,
+	"oauth2Permissions": [],
+	"oauth2RequirePostResponse": false,
+	"optionalClaims": {
+		"idToken": [],
+		"accessToken": [],
+		"saml2Token": []
+	},
+	"orgRestrictions": [],
+	"parentalControlSettings": {
+		"countriesBlockedForMinors": [],
+		"legalAgeGroupRule": "Allow"
+	},
+	"passwordCredentials": [],
+	"preAuthorizedApplications": [],
+	"publisherDomain": "garaio.com",
+	"replyUrlsWithType": [
+		{
+			"url": "https://app.getpostman.com/oauth2/callback",
+			"type": "Spa"
+		},
+		{
+			"url": "https://gadcssaaad.z6.web.core.windows.net",
+			"type": "Spa"
+		},
+		{
+			"url": "http://localhost:4200",
+			"type": "Spa"
+		}
+	],
+	"requiredResourceAccess": [
+		{
+			"resourceAppId": "00000003-0000-0000-c000-000000000000",
+			"resourceAccess": [
+				{
+					"id": "e1fe6dd8-ba31-4d61-89e7-88639da4683d",
+					"type": "Scope"
+				}
+			]
+		},
+		{
+			"resourceAppId": "a1c5f540-0000-0000-0000-8a7b1b00229b",
+			"resourceAccess": [
+				{
+					"id": "4750b5d5-0000-0000-0000-debfc39cfd8d",
+					"type": "Scope"
+				}
+			]
+		}
+	],
+	"samlMetadataUrl": null,
+	"signInUrl": null,
+	"signInAudience": "AzureADMyOrg",
+	"tags": [
+		"apiConsumer",
+		"singlePageApp"
+	],
+	"tokenEncryptionKeyId": null,
+	"verifiedPublisher": {
+		"displayName": null,
+		"verifiedPublisherId": null,
+		"addedDateTime": null
+	}
+}

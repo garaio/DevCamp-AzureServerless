@@ -1,0 +1,80 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title w-100" id="myModalLabel">{{ heading }}</h4>
+    </div>
+    <div class="modal-body">
+      <form #projectForm="ngForm">
+        <div class="md-form">
+          <input type="text" id="customerName" name="customerName" class="form-control" [(ngModel)]="project.customerName" mdbInput mdbValidate [validateSuccess]="false" #customerName="ngModel" required>
+          <label for="customerName">Customer Name</label>
+          <mdb-error *ngIf="customerName && customerName.invalid && (customerName.dirty || customerName.touched)">Input is required</mdb-error>
+        </div>
+
+        <div class="md-form">
+            <input type="text" id="projectName" name="projectName" class="form-control" [(ngModel)]="project.projectName" mdbInput mdbValidate [validateSuccess]="false" #projectName="ngModel" required>
+            <label for="projectName">Project Name</label>
+            <mdb-error *ngIf="projectName && projectName.invalid && (projectName.dirty || projectName.touched)">Input is required</mdb-error>
+          </div>
+  
+        <div class="md-form">
+          <textarea type="text" id="description" name="description" class="md-textarea form-control" [(ngModel)]="project.description" mdbInput mdbValidate [validateSuccess]="false" #description="ngModel"></textarea>
+          <label for="description">Description</label>
+          <mdb-error *ngIf="description && description.invalid && (description.dirty || description.touched)">Input is required</mdb-error>
+        </div>
+
+        <div class="md-form">
+          <input type="text" id="projectUrl" name="projectUrl" class="md-textarea form-control" [(ngModel)]="project.projectUrl" mdbInput mdbValidate [validateSuccess]="false" #projectUrl="ngModel">
+          <label for="projectUrl">Project Url</label>
+        </div>
+
+        <div class="md-form">
+          <input type="text" id="iconUrl" name="iconUrl" class="md-textarea form-control" [(ngModel)]="project.iconUrl" mdbInput mdbValidate [validateSuccess]="false" #iconUrl="ngModel">
+          <label for="iconUrl">Icon Url</label>
+        </div>
+
+        <div class="md-form">
+            <table id="technologies" class="table table-striped table-responsive-md btn-table" mdbTable bordered="true" small="true" >
+              <thead style="background-color: transparent">
+                <tr>
+                  <th>Technology</th>
+                  <th>Component</th>
+                </tr>
+              </thead>
+          
+              <tbody>
+                <tr *ngFor="let technology of project.usedTechnologies">
+                  <th scope="row">{{ getTechnologyName(technology.technologyKey) }}</th>
+                  <td>{{ technology.component }}</td>
+                  <td>
+                    <a (click)="onDeleteTechnology(technology)"><mdb-icon fas icon="trash"></mdb-icon></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          <div class="row mt-2">
+            <div class="col-md-5">
+              <select id="newTechnologyKey" class="browser-default custom-select" #newTechnologyKey>
+                <option *ngFor="let opt of technologies" [value]="opt.rowKey">{{opt.name}}</option>
+              </select>
+            </div>
+            <div class="col-md-5">
+              <input type="text" id="newTechnologyComponent" class="md-textarea form-control" mdbInput #newTechnologyComponent>
+            </div>
+            <div class="col-md-2 mt-2">
+              <a (click)="onAddTechnology(newTechnologyKey.value, newTechnologyComponent.value)"><mdb-icon fas icon="plus-circle"></mdb-icon></a>
+            </div>
+          </div>          
+        </div>
+
+    </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" mdbBtn color="white" class="black-text waves-light" aria-label="Close" (click)="modalRef.hide()"
+        mdbWavesEffect>Close</button>
+      <button type="button" mdbBtn color="red" class="relative waves-light" mdbWavesEffect (click)="onSave()">Save</button>
+    </div>
+  </div>

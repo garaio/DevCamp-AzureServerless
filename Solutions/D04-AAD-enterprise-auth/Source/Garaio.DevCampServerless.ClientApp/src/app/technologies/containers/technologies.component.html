@@ -1,0 +1,13 @@
+<div class="container-fluid">
+      <button mdbBtn color="primary" (click)="onAddTechnology()">Add new technology</button>
+  
+      <div *ngIf="technologies" class="mt-4 white">
+        <app-technologies-list [technologies]="technologies" (technologyEdited)="onTechnologyEdit($event)" (technologyDeleted)="onTechnologyDelete($event)"></app-technologies-list>
+      </div>
+  
+      <div *ngIf="isLoading$ | async" class="d-flex justify-content-center align-items-center" style="margin-top: 200px">
+        <div class="spinner-grow text-primary" role="status" style="width: 4rem; height: 4rem;">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+  </div>

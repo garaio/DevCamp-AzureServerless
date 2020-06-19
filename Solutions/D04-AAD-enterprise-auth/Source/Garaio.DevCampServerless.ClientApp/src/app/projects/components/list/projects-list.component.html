@@ -1,0 +1,30 @@
+<div class="z-depth-1">
+    <table class="table table-striped table-responsive-md btn-table" mdbTable borderless="true" >
+      <thead class="blue lighten-4">
+        <tr>
+          <th>Icon</th>
+          <th>Id</th>
+          <th>Customer</th>
+          <th>Project</th>
+          <th>URL</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let project of projects; trackBy: trackByFn">
+          <td><img *ngIf="!!project.iconUrl" [src]="project.iconUrl" class="img-fluid" alt="Responsive image" style="height: 15px"></td>
+          <th scope="row">{{ project.rowKey }}</th>
+          <td>{{ project.customerName }}</td>
+          <td>{{ project.projectName }}</td>
+          <td>{{ project.projectUrl }}</td>
+          <td>{{ getStatusName(project.status) }}</td>
+          <td>
+            <a (click)="onEdit(project)" class="mr-2"><mdb-icon fas icon="edit"></mdb-icon></a>
+            <a (click)="onDelete(project)"><mdb-icon fas icon="trash"></mdb-icon></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

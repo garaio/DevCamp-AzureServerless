@@ -1,0 +1,13 @@
+<div class="container-fluid">
+      <button mdbBtn color="primary" (click)="onAddProject()">Add new project</button>
+  
+      <div *ngIf="projects" class="mt-4 white">
+        <app-projects-list [projects]="projects" (projectEdited)="onProjectEdit($event)" (projectDeleted)="onProjectDelete($event)"></app-projects-list>
+      </div>
+  
+      <div *ngIf="isLoading$ | async" class="d-flex justify-content-center align-items-center" style="margin-top: 200px">
+        <div class="spinner-grow text-primary" role="status" style="width: 4rem; height: 4rem;">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+  </div>
