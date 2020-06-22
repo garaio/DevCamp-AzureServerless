@@ -1,8 +1,8 @@
 # Summary
-There is already an extensively documented solution [to setup user management and authentication based on Azure Activce Directory B2C](../D04-AAD-B2C-multi-tenancy/Readme.md). Experience showed that the setup of an enterprise solution with AAD is principally identical but has some small differences which easily becomes pitfalls.
+There is already an extensively documented solution [to setup user management and authentication based on Azure Activce Directory B2C](../D04-AAD-B2C-multi-tenancy/Readme.md). Experience showed that the setup of an enterprise solution with AAD is principally identical, but has some small differences which may be pitfalls.
 
 ## MSAL 2.0
-The implicit OAuth2 flow will be replaced in Microsoft Identity Solutions with the more robust Auth Code Flow. At the moment this is available as an early Preview release only. So this documented setup completely bases on MSAL 1.0 an the Implicit Flow.
+The implicit OAuth2 flow will be replaced in Microsoft Identity Solutions with the more robust [Authorization Code Flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows#authorization-code). At the moment this is available as an early Preview release only. So this documented setup completely bases on MSAL 1.0 and the [Implicit Grant Flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows#implicit-grant).
 
 # Setup
 ## App Registration API
@@ -56,11 +56,11 @@ The implicit OAuth2 flow will be replaced in Microsoft Identity Solutions with t
 
 ## SPA MSAL konfigurieren:
 - **CAUTION 1**: _Don't forget the Auth Key of the Function (transmitted either as Query-Param "code" or Header "x-function-key"). Otherwise you get a HTTP 401 which may confuse with MSAL setup. This doesn't apply if you configured the AuthLevel to "anonymous" (but this is not recommended)._
-- **CAUTION 2**: _Configure the Function / App Service URL with *HTTPS* (it is displayed in some places in the Portal with "http://..."). If you don't follow this, the Function will return regularly (as configured to support https only) a HTTP 301 with a redirect in the header. This leads to misleading CORS errors thrown by the Angular MSAL library when doing the OPTIONS call (shows something like "redirect not supported"). It may not be obvious to find the cause.
+- **CAUTION 2**: _Configure the Function / App Service URL with *HTTPS* (it is displayed in some places in the Portal with "http://..."). If you don't follow this, the Function will return regularly (as configured to support https only) a HTTP 301 with a redirect in the header. This leads to misleading CORS errors thrown by the Angular MSAL library when doing the OPTIONS call (shows something like "redirect not supported"). It may not be obvious to find the cause._
 - Configurations:
   - ClientId: AppId of SPA App Registration
   - Authority: `https://login.microsoftonline.com/<tenant-id>` (App Registration Single Tenant) or `https://login.microsoftonline.com/common` (App Registration Multi Tenant)
-  - Scopes: All scopes registered in SPA App Registration, especially important when User has to consent
+  - Scopes: All scopes registered in SPA App Registration, especially important when user has to consent
   
 Useful links:
 * https://medium.com/medialesson/authenticating-angular-apps-with-azure-active-directory-using-msal-angular-1-0-d7b2f4914be9
@@ -68,7 +68,7 @@ Useful links:
 # Consent to required permissions
 It is always simpler for enterprise applications that an Directory Administrator grants the permissions on behalf of the users. To simplify setup you can [generate a direct URL which you can provide to the Administrator](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/grant-admin-consent#construct-the-url-for-granting-tenant-wide-admin-consent).
 
-If this is not possible, make sure that the consent dialog is correctly shown with MSAL configuration. For Angular you need to define all relevant `consentScopes` and also pass them wherever an explicit call of `loginRedirect()` / `loginPopup()` is made.
+> If this is not possible, make sure that the consent dialog is correctly shown with MSAL configuration. For Angular you need to define all relevant `consentScopes` and also pass them wherever an explicit call of `loginRedirect()` / `loginPopup()` is made.
 
 # Additional functionality: Application-Roles
 Often not all enterprise users are treated equal in the application but have to be assigned to multiple groups / roles. Azure Active Directory provides support for this functionality with two different approaches.
