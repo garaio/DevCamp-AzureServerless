@@ -54,7 +54,7 @@ The implicit OAuth2 flow will be replaced in Microsoft Identity Solutions with t
 
 [**ARM Deployment Template**](./Source/ApiFunctionAuthConfig-azuredeploy.json)
 
-## SPA MSAL konfigurieren:
+## SPA MSAL Configuration:
 - **CAUTION 1**: _Don't forget the Auth Key of the Function (transmitted either as Query-Param "code" or Header "x-function-key"). Otherwise you get a HTTP 401 which may confuse with MSAL setup. This doesn't apply if you configured the AuthLevel to "anonymous" (but this is not recommended)._
 - **CAUTION 2**: _Configure the Function / App Service URL with *HTTPS* (it is displayed in some places in the Portal with "http://..."). If you don't follow this, the Function will return regularly (as configured to support https only) a HTTP 301 with a redirect in the header. This leads to misleading CORS errors thrown by the Angular MSAL library when doing the OPTIONS call (shows something like "redirect not supported"). It may not be obvious to find the cause._
 - Configurations:
