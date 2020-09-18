@@ -42,5 +42,26 @@ Provide possibilities to visualize operational key aspects of the application. E
 * [Preparation](./Track-Ops/Preparation.md)
 * [Challenges](./Track-Ops/Challenges.md)
 
+# Learning Pathes
+To simplify the selection of challenges depending on your interests here some recommendations:
+
+## No-Code or Application Complexity
+* DevOps: [DO03 - Measure Performance](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-DevOps/Challenges.md#do03-measure-performance)
+* Ops: [O03 - Business Intelligence](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Ops/Challenges.md)
+
+## Client-side Development (JavaScript)
+* Mixed with work on Azure services/infrastructure:
+  * Dev: [D10 - Client Notifications](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Dev/Challenges.md#d10-client-notifications)
+  * Dev: [D22 - Microsoft Teams Integration](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Dev/Challenges.md#d22-microsoft-teams-integration)
+  * Dev: [D30 - Simplified Frontend Apps](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Dev/Challenges.md#d30-simplified-frontend-apps)
+  * Dev: [D34 - Consolidated Logging](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Dev/Challenges.md#d34-consolidated-logging)
+  * DevOps: [DO10 - Vulnerability & License Scanning](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-DevOps/Challenges.md#do10-vulnerability-&-license-scanning)
+* Pure JavaScript implementations (local)
+  * Dev: [D31 - Static Landing Page](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Dev/Challenges.md#d31-static-landing-page)
+  * Dev: [D32 - Frontend Component Packaging](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Dev/Challenges.md#d32-frontend-component-packaging)
+  * Dev: [D33 - Corporate Design System](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-Dev/Challenges.md#d33-corporate-design-system)
+  * DevOps: [DO11 - Quality Testing](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-DevOps/Challenges.md#do11-quality-testing)
+  * DevOps: [DO12 - E2E Testing](https://github.com/garaio/DevCamp-AzureServerless/blob/master/Track-DevOps/Challenges.md#do12-e2e-testing)
+
 # Solutions
 Feel free to share your work. Please follow these [guidelines](./Solutions/Guidelines.md).

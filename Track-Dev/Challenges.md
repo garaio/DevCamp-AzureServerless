@@ -21,6 +21,7 @@
 1. [D31 - Static Landing Page](#d31-static-landing-page)
 1. [D32 - Frontend Component Packaging](#d32-frontend-component-packaging)
 1. [D33 - Corporate Design System](#d33-corporate-design-system)
+1. [D34 - Consolidated Logging](#d34-consolidated-logging)
 
 # D01: Provide and manage API
 ## Goal
