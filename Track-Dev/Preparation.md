@@ -1,6 +1,6 @@
 # Recommended infrastructure for challenges
 ## Development Environment
-Especially when working with Azure Function, either [Visual Studio Code](https://code.visualstudio.com/) or [Visual Studio 2017+](https://visualstudio.microsoft.com/de/vs/) (Community edition sufficient) is highly recommended.
+Either [Visual Studio Code](https://code.visualstudio.com/) or [Visual Studio 2017+](https://visualstudio.microsoft.com/de/vs/) (Community edition sufficient) is highly recommended.
 
 ### Extensions for Visual Studio
 ![](..\Resources\Preparation_VisualStudio2019-Configuration.png)
