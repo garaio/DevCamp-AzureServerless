@@ -1,6 +1,13 @@
 # Overview
+## Basic Azure Serverless
 1. [DO01 - Infrastructure as Code](#do01-infrastructure-as-code)
 1. [DO02 - Continous Deployment](#do02-continous-deployment)
+1. [DO03 - Measure Performance](#do03-measure-performance)
+
+## Frontend Development
+1. [DO10 - Vulnerability & License Scanning](#do10-vulnerability-&-license-scanning)
+1. [DO11 - Quality Testing](#do11-quality-testing)
+1. [DO12 - E2E Testing](#do12-e2e-testing)
 
 # DO01: Infrastructure as Code
 ## Goal
@@ -35,3 +42,52 @@ DevOps
 
 ## Hints
 You should work with an Azure subscription in your own tenant/directory. If the setup of a Service Connection in DevOps (recently refactored) does not work, you may [follow these instructions](https://docs.microsoft.com/de-de/azure-stack/operator/azure-stack-create-service-principals).
+
+# DO03: Measure Performance
+## Goal
+DevOps (the theme, not the tool Azure DevOps) is about increasing the performance of a delivery team to deliver features more frequently in higher quality. Key for continous improvement is to continously measure the performance and that the delivery team has the ability to gain insights.
+
+Provide a concept and some reference implementation of how according KPI's may be defined, measured, visualized and made available to the project team and stakeholders.
+
+## Potential Tools / Azure Services
+DevOps, Power BI
+
+## Hints
+* Microsoft Learn Module and [Summary of DevOps KPI's](https://docs.microsoft.com/de-de/learn/modules/get-started-with-devops/5-summary)
+* MSDN documentation to [Connect Power BI with Azure DevOps](https://docs.microsoft.com/en-us/azure/devops/report/powerbi/data-connector-connect?view=azure-devops)
+
+# DO10: Vulnerability & License Scanning
+## Goal
+As JavaScript packages are sometimes hard to manage there is an automatic check for known vulnerabilities wanted during the CI process.
+
+Elaborate a reasonable solution for this need.
+
+## Potential Tools / Azure Services
+DevOps
+
+## Hints
+* [Microsoft Learn module as introduction](https://docs.microsoft.com/en-us/learn/modules/scan-open-source)
+
+# DO11: Quality Testing
+## Goal
+The Frontend-application shall include unit test which are executed during each build.
+
+Elaborate a reasonable solution for this need and provide a reference implementation.
+
+## Potential Tools / Azure Services
+DevOps, [Jest](https://jestjs.io/)
+
+## Hints
+_(none)_
+
+# DO12: E2E Testing
+## Goal
+For builds on the main and release branches additionaly stability tests shall be integrated which test the availabilty and correctness of the UI. Initially these may be just some Smoke-Tests (later it may be extended to more complex integration tests).
+
+Elaborate a reasonable solution for this need and provide a reference implementation.
+
+## Potential Tools / Azure Services
+DevOps, [Cypress](https://www.cypress.io/)
+
+## Hints
+_(none)_
