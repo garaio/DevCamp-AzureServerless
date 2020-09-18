@@ -5,6 +5,7 @@ For the creation of analytics and monitoring dashboards you may use PowerBI. The
 The pure Azure related challenges can be realized directly in the [Portal](https://portal.azure.com/) without further tools.
 
 # Some relevant online resources
+- [Short explanation of Azure Services used for monitoring and analytics purposes along with some best practices](https://github.com/garaio/AzureRecipes/tree/master/Knowledge/BestPractices-AzureSolutions-Monitoring)
 - [Kusto Query Language](https://docs.microsoft.com/en-us/azure/kusto/query/)
 - [Kusto Query Demo Space](https://portal.loganalytics.io/demo#/discover/query/main)
 - [Power Query M function reference](https://docs.microsoft.com/en-us/powerquery-m/power-query-m-function-reference)

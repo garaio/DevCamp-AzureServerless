@@ -23,16 +23,17 @@ Additionally you may take care of the impact of the load to costs and performanc
 Alert Rules, Action Groups, Log Analytics (Workspace / Application Insights)
 
 ## Hints
-(none)
+* Azure Recipes for [Best Practices and Examples for Alerts](https://github.com/garaio/AzureRecipes/tree/master/Knowledge/BestPractices-AzureSolutions-Monitoring#alerts)
 
 # O03: Business Intelligence
 ## Goal
 Provide all relevant business data in Power BI for custom analytics. How can they be extracted and imported from different sources? Can you extend those data with operational insights (such as current costs or the timestamp of last releases/changes)?
 
-Based on your concept you may generate a dashboard for demonstration (including e.g. range of skills from all users). Additional you can setup an automated actualization of the dataset.
+Based on your concept you may generate a dashboard for demonstration (including e.g. range of skills from all users). Additionally you can setup an automated actualization of the dataset.
 
 ## Potential Tools / Azure Services
 Power BI (Desktop), Log Analytics Workspace, Activity Log
 
 ## Hints
+* There is a Power BI Desktop Template file provided including the most relevant data connections and models: [Template](./O03/Application-Dashboard.pbit)
 * You can directly generate and export Power BI snippets (M queries) of KUSTO queries in Log Analytics views
