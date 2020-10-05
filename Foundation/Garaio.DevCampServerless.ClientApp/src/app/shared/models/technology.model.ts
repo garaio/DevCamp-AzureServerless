@@ -1,7 +1,7 @@
 import { TechnologyLink } from './technology-link.model';
 
 export interface Technology {
-    rowKey?: string;
+    entityKey?: string;
     type?: TechnologyType;
     name?: string;
     description?: string;

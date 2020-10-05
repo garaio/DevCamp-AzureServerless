@@ -5,7 +5,7 @@
 Param(
     [string] $ArtifactStagingDirectory = '.',
     [string] [Parameter(Mandatory=$true)] $ResourceNameSuffix,
-	[string] $ResourceNamePrefix = 'ga-dcs',
+	[string] $ResourceNamePrefix = 'gro-dcs',
     [string] [alias("ResourceGroupLocation")] $Location = 'westeurope',
     [string] $ResourceGroupName = $ResourceNamePrefix + '-' + $ResourceNameSuffix,
     [switch] $UploadArtifacts,

@@ -2,7 +2,7 @@ import { ProjectTechnology } from './project-technology.model';
 import { PublishState } from './publish-state.model';
 
 export interface Project {
-    rowKey?: string;
+    entityKey?: string;
     customerName?: string;
     projectName?: string;
     description?: string;

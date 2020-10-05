@@ -15,7 +15,7 @@
       <tbody>
         <tr *ngFor="let project of projects; trackBy: trackByFn">
           <td><img *ngIf="!!project.iconUrl" [src]="project.iconUrl" class="img-fluid" alt="Responsive image" style="height: 15px"></td>
-          <th scope="row">{{ project.rowKey }}</th>
+          <th scope="row">{{ project.entityKey }}</th>
           <td>{{ project.customerName }}</td>
           <td>{{ project.projectName }}</td>
           <td>{{ project.projectUrl }}</td>

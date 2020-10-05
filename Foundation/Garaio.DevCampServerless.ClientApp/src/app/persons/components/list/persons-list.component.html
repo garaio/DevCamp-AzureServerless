@@ -14,7 +14,7 @@
   
       <tbody>
         <tr *ngFor="let person of persons; trackBy: trackByFn">
-          <th scope="row">{{ person.rowKey }}</th>
+          <th scope="row">{{ person.entityKey }}</th>
           <td>{{ person.firstname }}</td>
           <td>{{ person.lastname }}</td>
           <td>{{ person.jobTitle }}</td>

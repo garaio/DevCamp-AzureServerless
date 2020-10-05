@@ -31,7 +31,7 @@ export class TechnologiesModalComponent implements OnInit {
 
   getTechnologyName(technologyKey: string): string | undefined {
     if (this.technologies) {
-      const tech = this.technologies.find(t => t.rowKey === technologyKey);
+      const tech = this.technologies.find(t => t.entityKey === technologyKey);
       return tech && tech.name;
     }
 
@@ -48,7 +48,7 @@ export class TechnologiesModalComponent implements OnInit {
 
   onAddTechnologyLink(technologyKey: string, type: number | LinkType) {
     const technologyLink: TechnologyLink = {
-      fromTechnologyKey: this.technology.rowKey,
+      fromTechnologyKey: this.technology.entityKey,
       toTechnologyKey: technologyKey,
       type: type
     };

@@ -10,7 +10,7 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
 {
     public class EntityManager<T> where T : EntityBase, new()
     {
-        
+
         private readonly CloudTable _table;
         private readonly ILogger _log;
 
@@ -19,12 +19,17 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             _table = table ?? throw new ArgumentNullException(nameof(table));
             _log = log ?? throw new ArgumentNullException(nameof(log));
         }
-        
+
+        /// <summary>
+        /// Note: This method should not be used implemented that way in a productive application
+        /// </summary>
         public async Task<IList<T>> GetAllAsync()
         {
+            await Task.Yield();
+
             try
             {
-                return _table.CreateQuery<T>().Where(x => x.PartitionKey == EntityBase.GlobalPartitionKey).ToArray();
+                return _table.CreateQuery<T>().ToArray();
             }
             catch (StorageException e)
             {
@@ -35,9 +40,11 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
 
         public async Task<IList<T>> GetWhereAsync(Func<T, bool> predicate)
         {
+            await Task.Yield();
+
             try
             {
-                return _table.CreateQuery<T>().Where(x => x.PartitionKey == EntityBase.GlobalPartitionKey).Where(predicate).ToArray();
+                return _table.CreateQuery<T>().Where(predicate).ToArray();
             }
             catch (StorageException e)
             {
@@ -46,13 +53,13 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             }
         }
 
-        public async Task<T> GetAsync(string key)
+        public async Task<T> GetAsync(string partitionKey, string rowKey)
         {
             try
             {
-                TableOperation retrieveOperation = TableOperation.Retrieve<T>(EntityBase.GlobalPartitionKey, key);
+                TableOperation retrieveOperation = TableOperation.Retrieve<T>(partitionKey, rowKey);
                 TableResult result = await _table.ExecuteAsync(retrieveOperation);
-                
+
                 return result.Result as T;
             }
             catch (StorageException e)
@@ -62,18 +69,24 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             }
         }
 
+        public Task<T> GetAsync(string entityKey)
+        {
+            var (partitionKey, rowKey) = EntityBase.ParseKeys(entityKey);
+
+            return GetAsync(partitionKey, rowKey);
+        }
+
         public async Task<T> CreateOrUpdate(T entity)
         {
             try
             {
-                var key = entity.RowKey;
-                var exists = !string.IsNullOrEmpty(key) && _table.CreateQuery<T>().Where(x => x.PartitionKey == EntityBase.GlobalPartitionKey && x.RowKey == key).AsEnumerable().Any();
+                var exists = _table.CreateQuery<T>().Where(x => x.PartitionKey == entity.PartitionKey && x.RowKey == entity.RowKey).AsEnumerable().Any();
 
                 TableOperation insertOrMergeOperation = TableOperation.InsertOrReplace(entity);
                 TableResult result = await _table.ExecuteAsync(insertOrMergeOperation);
 
                 var metric = string.Format(exists ? Constants.Metrics.EntityUpdatedPattern : Constants.Metrics.EntityCreatedPattern, typeof(T).Name);
-                _log.LogMetric(metric, 1, new Dictionary<string, object> { { "key", key } });
+                _log.LogMetric(metric, 1, new Dictionary<string, object> { { "partitionKey", entity.PartitionKey }, { "rowKey", entity.RowKey } });
 
                 return result.Result as T;
             }
@@ -91,7 +104,7 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
         {
             try
             {
-                var existingKeys = _table.CreateQuery<T>().Where(x => x.PartitionKey == EntityBase.GlobalPartitionKey).Where(predicate).Select(x => x.RowKey).ToArray();
+                var existingKeys = _table.CreateQuery<T>().Where(predicate).Select(x => new { x.PartitionKey, x.RowKey }).ToArray();
 
                 var created = 0;
                 var updated = 0;
@@ -99,21 +112,21 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
 
                 var batchOperation = new TableBatchOperation();
 
-                foreach (var entity in entities.Where(e => !existingKeys.Contains(e.RowKey)))
+                foreach (var entity in entities.Where(e => !existingKeys.Any(x => x.PartitionKey == e.PartitionKey && x.RowKey == e.RowKey)))
                 {
                     batchOperation.Add(TableOperation.InsertOrReplace(entity));
                     created++;
                 }
 
-                foreach (var entity in entities.Where(e => existingKeys.Contains(e.RowKey)))
+                foreach (var entity in entities.Where(e => existingKeys.Any(x => x.PartitionKey == e.PartitionKey && x.RowKey == e.RowKey)))
                 {
                     batchOperation.Add(TableOperation.InsertOrReplace(entity));
                     updated++;
                 }
 
-                foreach (var entityKey in existingKeys.Where(k => !entities.Any(e => e.RowKey == k)))
+                foreach (var keyPair in existingKeys.Where(x => !entities.Any(e => x.PartitionKey == e.PartitionKey && x.RowKey == e.RowKey)))
                 {
-                    var entity = await GetAsync(entityKey);
+                    var entity = await GetAsync(keyPair.PartitionKey, keyPair.RowKey);
 
                     batchOperation.Add(TableOperation.Delete(entity));
                     deleted++;
@@ -148,11 +161,11 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
             }
         }
 
-        public async Task<bool> Delete(string key)
+        public async Task<bool> Delete(string entityKey)
         {
             try
             {
-                var entity = await GetAsync(key);
+                var entity = await GetAsync(entityKey);
                 if (entity == null)
                     return false;
 
@@ -160,7 +173,7 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
                 TableResult result = await _table.ExecuteAsync(deleteOperation);
 
                 var metric = string.Format(Constants.Metrics.EntityDeletedPattern, typeof(T).Name);
-                _log.LogMetric(metric, 1, new Dictionary<string, object> { { "key", key } });
+                _log.LogMetric(metric, 1, new Dictionary<string, object> { { "partitionKey", entity.PartitionKey }, { "rowKey", entity.RowKey } });
 
                 return true;
             }
@@ -207,9 +220,7 @@ namespace Garaio.DevCampServerless.ServiceFuncApp
         {
             if (tableClient == null)
             {
-                string storageConnectionString = Environment.GetEnvironmentVariable(Constants.Configurations.StorageConnectionString);
-
-                tableClient = CloudStorageAccount.Parse(storageConnectionString).CreateCloudTableClient(new TableClientConfiguration());
+                tableClient = CloudStorageAccount.Parse(Configurations.StorageConnectionString).CreateCloudTableClient(new TableClientConfiguration());
             }
 
             var tableName = typeof(T).Name.ToLower();

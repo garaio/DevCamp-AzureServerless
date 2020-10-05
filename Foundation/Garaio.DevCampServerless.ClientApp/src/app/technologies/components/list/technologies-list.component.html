@@ -14,7 +14,7 @@
       <tbody>
         <tr *ngFor="let technology of technologies; trackBy: trackByFn">
           <td><img *ngIf="!!technology.iconUrl" [src]="technology.iconUrl" class="img-fluid" alt="Responsive image" style="height: 15px"></td>
-          <th scope="row">{{ technology.rowKey }}</th>
+          <th scope="row">{{ technology.entityKey }}</th>
           <td>{{ getTechnologyTypeName(technology.type) }}</td>
           <td>{{ technology.name }}</td>
           <td>{{ technology.productUrl }}</td>

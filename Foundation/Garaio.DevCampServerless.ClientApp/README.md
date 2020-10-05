@@ -1,128 +1,27 @@
-[![Material Design for Bootstrap](https://mdbootstrap.com/wp-content/uploads/2018/03/admin-angular.png)](https://mdbootstrap.com/freebies/angular-admin-dashboard-template-angular-5-material-design/)
+# GroDcsClientApp
 
-# Bootstrap 4 & Material Design - Angular Admin Dashboard Template
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.12.
 
-Free, responsive Admin Dashboard template containing different styles of dashboards, data presentations, and numerous insightful components. Built with the newest Bootstrap 4, **Angular 5** and Material Design. MIT license – free for personal and commercial use. It's build with MDBootstrap - powerful and free UI Kit, containing **400+** material UI elements, **600+** material icons, **74** CSS animations, SASS files, templates, tutorials and many more.
+## Development server
 
-________
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-# Live Previews: 
-## http://ng-admin.mdbootstrap.com/dashboards/v1
+## Code scaffolding
 
-# Most important features:
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-1. Build upon Bootstrap 4 & Angular 7 & MDB
+## Build
 
-2. Plenty of useful components
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-3. Easy installation
+## Running unit tests
 
-4. Easy to use and customize
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-5. Active community
+## Running end-to-end tests
 
-6. Dedicated support forum
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-7. Fully responsive
+## Further help
 
-# Demo:  
-**Main demo**: http://ng-admin.mdbootstrap.com/dashboards/v1
-
-# Installation:
-
-**Install:** 
-npm i
-
-**Run:**
-ng serve -o
-
-**Test:**
-ng test 
-
-**Production Build:**
-ng build --prod
-
-**More info:**
-http://mdbootstrap.com/angular/getting-started/
-
-# FAQ
-http://mdbootstrap.com/angular/faq/
-
-# Support:
-http://mdbootstrap.com/forums/forum/support/
-
-
-# Angular 7 tutorial – creating an Angular Bootstrap app, step by step:
-## https://mdbootstrap.com/angular/angular-tutorial/
-
-# Additional tutorials:
-
-**MDB - Bootstrap tutorial**: https://mdbootstrap.com/bootstrap-tutorial/
-
-**MDB - Wordpress tutorial**: https://mdbootstrap.com/wordpress-tutorial/
-
-# Documentation:
-
-**Huge, detailed documentation avilable online on**: https://mdbootstrap.com/angular
-
-# PRO version:
-
-**MDB Admin Template Pro (Angular version)**: https://mdbootstrap.com/products/angular-admin-dashboard/
-
-# Highlights:  
-**Bootstrap 4**  
-Thanks to MDB you can take advantage of all features of the newest Bootstrap 4 Stable
-
-**Free for personal and commercial use**  
-Our license is user-friendly. Feel free to use MDB for both private as well as commercial projects.   
-
-**Fully responsive**  
-It doesn't matter whether your project will be displayed on desktop, laptop, tablet or mobile phone. MDB looks great on each screen.
-
-**Technical support**  
-We really care about reliability. If you have any questions - do not hesitate to contact us.  
-
-**Active community**  
-Our society grows day by day. Visit **our forum** and check how it is to be a part of our family.  
-
-**Flex box**  
-MDB fully suppports Flex Box. You can forget about alignment issues.  
-
-**Latest Angular**  
-MDB is integrated with newest Angular 7, therefore you can use all the newest features which comes along with it.  
-
-**Detailed documentation:**  
-We give you detailed documentation at your disposal. It will help you to implement your ideas easily.  
-
-A big **thank you to all our users** who are working with us to improve the software. We wouldn't be where we are without you.  
-
-# Useful Links:  
-
-Getting started: https://mdbootstrap.com/angular/angular-bootstrap-getting-started/
-
-5 min quick start: https://mdbootstrap.com/angular/mdb-quick-start/  
-
-Material Design + Bootstrap Tutorial: https://mdbootstrap.com/bootstrap-tutorial/  
-
-Material Design + WordPress Tutorial: https://mdbootstrap.com/wordpress-tutorial/  
-
-Other Freebies: https://mdbootstrap.com/freebies/  
-
-Premium Templates: https://mdbootstrap.com/templates/  
-
-
-# Social Media:  
-
-Twitter: https://twitter.com/MDBootstrap  
-
-Facebook: https://www.facebook.com/mdbootstrap  
-
-Pinterest: https://pl.pinterest.com/mdbootstrap 
-
-Google+: https://plus.google.com/u/0/b/107863090883699620484/+Mdbootstrap/posts  
-
-Dribbble: https://dribbble.com/mdbootstrap
-
-LinkedIn: https://www.linkedin.com/company/material-design-for-bootstrap
-
-# Visit our website: https://mdbootstrap.com/
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

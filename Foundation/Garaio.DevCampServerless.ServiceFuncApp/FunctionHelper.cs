@@ -1,11 +1,16 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 
 namespace Garaio.DevCampServerless.ServiceFuncApp
 {
     public static class FunctionHelper
     {
-        private static JsonSerializerSettings serializerSettings;
-        public static JsonSerializerSettings SerializerSettings => serializerSettings ?? (serializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+        public static readonly Lazy<JsonSerializerSettings> SerializerSettings = new Lazy<JsonSerializerSettings>(() => new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
+
+        public static string ToJson(object value)
+        {
+            return JsonConvert.SerializeObject(value, SerializerSettings.Value);
+        }
     }
 }

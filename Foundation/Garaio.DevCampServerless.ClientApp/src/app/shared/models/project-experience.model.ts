@@ -1,7 +1,7 @@
 import { PublishState } from './publish-state.model';
 
 export interface ProjectExperience {
-    rowKey?: string;
+    entityKey?: string;
     personKey?: string;
     projectKey?: string;
     roleInProject?: string;

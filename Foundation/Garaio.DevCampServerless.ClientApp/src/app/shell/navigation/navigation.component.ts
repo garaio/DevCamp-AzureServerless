@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { environment } from 'src/environments/environment';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-navigation',
@@ -16,12 +16,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   userName$: Observable<string>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private appConfig: AppConfigService) {
     this.clicked = this.clicked === undefined ? false : true;
   }
 
   ngOnInit() {
-    const url = `${environment.apiBaseUrl}/user?code=${environment.apiAuthCode}`;
+    const url = `${this.appConfig.get().api.baseUrl}/user?code=${this.appConfig.get().api.authCode}`;
     this.userName$ = this.http.get(url, {responseType: 'text'});
   }
 

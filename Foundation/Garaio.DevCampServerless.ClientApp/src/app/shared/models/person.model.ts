@@ -3,7 +3,7 @@ import { Skill } from './skill.model';
 import { PublishState } from './publish-state.model';
 
 export interface Person {
-    rowKey?: string;
+    entityKey?: string;
     firstname?: string;
     lastname?: string;
     jobTitle?: string;

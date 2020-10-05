@@ -6,14 +6,28 @@ namespace Garaio.DevCampServerless.Common.Model
 {
     public abstract class EntityBase : TableEntity
     {
-        public const string GlobalPartitionKey = "GA";
+        public const string KeySeparator = "|";
+        public const string DefaultPartitionKey = "devcamp";
 
         public EntityBase()
         {
-            PartitionKey = GlobalPartitionKey;
+            PartitionKey = DefaultPartitionKey;
             RowKey = NewRowKey;
         }
+
         public static string NewRowKey => Guid.NewGuid().ToString();
+
+        public static (string partitionKey, string rowKey) ParseKeys(string entityKey)
+        {
+            var elements = entityKey?.Split(new[] { KeySeparator }, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
+
+            if (elements.Length == 2)
+                return (elements[0], elements[1]);
+
+            return default;
+        }
+
+        public string EntityKey => PartitionKey + KeySeparator + RowKey;
 
         public override IDictionary<string, EntityProperty> WriteEntity(OperationContext operationContext)
         {

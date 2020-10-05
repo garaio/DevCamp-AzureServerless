@@ -1,0 +1,6 @@
+{
+  "api": {
+    "baseUrl": "https://gro-dcs-service-f-xyz.azurewebsites.net/api",
+    "authCode": "<api-key>"
+  }
+}

@@ -1,5 +1,5 @@
 export interface TechnologyLink {
-    rowKey?: string;
+    entityKey?: string;
     fromTechnologyKey?: string;
     toTechnologyKey?: string;
     type?: LinkType;

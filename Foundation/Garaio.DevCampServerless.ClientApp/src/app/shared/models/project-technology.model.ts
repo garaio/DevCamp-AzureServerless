@@ -1,5 +1,5 @@
 export interface ProjectTechnology {
-    rowKey?: string;
+    entityKey?: string;
     projectKey?: string;
     technologyKey?: string;
     component?: string;

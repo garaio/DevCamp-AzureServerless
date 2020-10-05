@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
-import { environment } from 'src/environments/environment';
 import { Subscription, Subject } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
 
@@ -9,6 +8,7 @@ import { Project } from '../../shared/models/project.model';
 import { Person } from '../../shared/models/person.model';
 import { PersonsModalComponent } from '../components/modal/persons-modal.component';
 import { Technology } from 'src/app/shared/models/technology.model';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-persons',
@@ -30,10 +30,10 @@ export class PersonsComponent implements OnInit, OnDestroy {
         class: 'modal-dialog modal-dialog-scrollable'
   };
 
-  constructor(private modalService: MDBModalService, private http: HttpClient) {
+  constructor(private modalService: MDBModalService, private http: HttpClient, private appConfig: AppConfigService) {
     this.gridDataSub = this.loadGridData.pipe(
       tap(_ => this.isLoading$.next(true)),
-      switchMap(_ => this.http.get<Person[]>(`${environment.apiBaseUrl}/persons?code=${environment.apiAuthCode}`)),
+      switchMap(_ => this.http.get<Person[]>(`${this.appConfig.get().api.baseUrl}/persons?code=${this.appConfig.get().api.authCode}`)),
       tap(_ => this.isLoading$.next(false))
     ).subscribe((persons: Person[]) => {
       this.persons = persons;
@@ -43,11 +43,11 @@ export class PersonsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadGridData.emit(null);
 
-    this.http.get<Project[]>(`${environment.apiBaseUrl}/projects?code=${environment.apiAuthCode}`)
+    this.http.get<Project[]>(`${this.appConfig.get().api.baseUrl}/projects?code=${this.appConfig.get().api.authCode}`)
     .pipe(take(1))
     .subscribe(p => this.projects = p);
 
-    this.http.get<Technology[]>(`${environment.apiBaseUrl}/technologies?code=${environment.apiAuthCode}`)
+    this.http.get<Technology[]>(`${this.appConfig.get().api.baseUrl}/technologies?code=${this.appConfig.get().api.authCode}`)
     .pipe(take(1))
     .subscribe(t => this.technologies = t);
   }
@@ -68,7 +68,7 @@ export class PersonsComponent implements OnInit, OnDestroy {
     this.modalRef.content.personData.pipe(
       take(1),
       switchMap((personData: Person) => {
-        const url = `${environment.apiBaseUrl}/persons?code=${environment.apiAuthCode}`;
+        const url = `${this.appConfig.get().api.baseUrl}/persons?code=${this.appConfig.get().api.authCode}`;
         return this.http.post<Person>(url, personData);
       })).subscribe((_: any) => this.loadGridData.emit(null));
   }
@@ -84,18 +84,18 @@ export class PersonsComponent implements OnInit, OnDestroy {
     this.modalRef.content.personData.pipe(
       take(1),
       switchMap((personData: Person) => {
-        const url = `${environment.apiBaseUrl}/persons/${person.rowKey}?code=${environment.apiAuthCode}`;
+        const url = `${this.appConfig.get().api.baseUrl}/persons/${person.entityKey}?code=${this.appConfig.get().api.authCode}`;
         return this.http.put<Person>(url, personData);
       })).subscribe((_: any) => this.loadGridData.emit(null));
   }
 
   onPersonEdit(person: Person) {
-    const url = `${environment.apiBaseUrl}/persons/${person.rowKey}?code=${environment.apiAuthCode}`;
+    const url = `${this.appConfig.get().api.baseUrl}/persons/${person.entityKey}?code=${this.appConfig.get().api.authCode}`;
     this.http.get<Person>(url).pipe(take(1)).subscribe(p => this.openEditPersonModal(p));
   }
 
   onPersonDelete(person: Person) {
-    const url = `${environment.apiBaseUrl}/persons/${person.rowKey}?code=${environment.apiAuthCode}`;
+    const url = `${this.appConfig.get().api.baseUrl}/persons/${person.entityKey}?code=${this.appConfig.get().api.authCode}`;
     this.http.delete(url).pipe(take(1)).subscribe(_ => this.loadGridData.emit(null));
   }
 }

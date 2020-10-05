@@ -33,7 +33,7 @@ export class PersonsModalComponent implements OnInit {
 
   getProjectName(projectKey: string): string | undefined {
     if (this.projects) {
-      const project = this.projects.find(t => t.rowKey === projectKey);
+      const project = this.projects.find(t => t.entityKey === projectKey);
       return project && `${project.customerName} / ${project.projectName}`;
     }
 
@@ -42,7 +42,7 @@ export class PersonsModalComponent implements OnInit {
 
   getTechnologyName(technologyKey: string): string | undefined {
     if (this.technologies) {
-      const tech = this.technologies.find(t => t.rowKey === technologyKey);
+      const tech = this.technologies.find(t => t.entityKey === technologyKey);
       return tech && tech.name;
     }
 
@@ -55,7 +55,7 @@ export class PersonsModalComponent implements OnInit {
 
   onAddProjectExperience(projectKey: string, roleInProject: string, description: string) {
     const projExperience: ProjectExperience = {
-      personKey: this.person.rowKey,
+      personKey: this.person.entityKey,
       projectKey: projectKey,
       roleInProject: roleInProject,
       description: description
@@ -79,7 +79,7 @@ export class PersonsModalComponent implements OnInit {
 
   onAddSkill(technologyKey: string, level: SkillLevel) {
     const skill: Skill = {
-      personKey: this.person.rowKey,
+      personKey: this.person.entityKey,
       technologyKey: technologyKey,
       level: level
     };

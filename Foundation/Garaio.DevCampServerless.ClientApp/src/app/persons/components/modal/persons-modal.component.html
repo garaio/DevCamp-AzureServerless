@@ -60,7 +60,7 @@
           <div class="row mt-2">
             <div class="col-md-5">
               <select id="newSkillTechnologyKey" class="browser-default custom-select" #newSkillTechnologyKey>
-                <option *ngFor="let opt of technologies" [value]="opt.rowKey">{{opt.name}}</option>
+                <option *ngFor="let opt of technologies" [value]="opt.entityKey">{{opt.name}}</option>
               </select>
             </div>
             <div class="col-md-5">
@@ -99,7 +99,7 @@
         <div class="row mt-2">
           <div class="col-md-6">
             <select id="newExpProjectKey" class="browser-default custom-select" #newExpProjectKey>
-              <option *ngFor="let opt of projects" [value]="opt.rowKey">{{getProjectName(opt.rowKey)}}</option>
+              <option *ngFor="let opt of projects" [value]="opt.entityKey">{{getProjectName(opt.entityKey)}}</option>
             </select>
           </div>
           <div class="col-md-6">

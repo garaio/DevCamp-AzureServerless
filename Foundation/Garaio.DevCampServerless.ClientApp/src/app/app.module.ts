@@ -1,15 +1,13 @@
-import { AgmCoreModule } from '@agm/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routes.service';
+import { AppConfigService } from './app-config.service';
 
-import { SampleModule } from './sample/sample.module';
 import { SharedModule } from './shared/shared.module';
 import { ShellModule } from './shell/shell.module';
 import { OverviewModule } from './overview/overview.module';
@@ -22,28 +20,27 @@ import { PersonsModule } from './persons/persons.module';
     AppComponent
   ],
   imports: [
-    AgmCoreModule.forRoot({
-      apiKey: ''
-    }),
     BrowserModule,
-    BrowserAnimationsModule,
+    AppRoutingModule,
     HttpClientModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
+    MDBBootstrapModule.forRoot(),
 
     ShellModule,
     SharedModule,
-    SampleModule,
     OverviewModule,
     ProjectsModule,
     TechnologiesModule,
-    PersonsModule,
-
-    AppRoutes
+    PersonsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent],
-  schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
+  providers: [
+    AppConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (appConfig: AppConfigService) => () => appConfig.load(),
+      multi: true,
+      deps: [AppConfigService]
+    }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

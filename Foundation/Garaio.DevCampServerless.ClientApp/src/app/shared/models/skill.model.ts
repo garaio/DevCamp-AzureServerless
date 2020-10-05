@@ -1,5 +1,5 @@
 export interface Skill {
-    rowKey?: string;
+    entityKey?: string;
     personKey?: string;
     technologyKey?: string;
     level?: SkillLevel;

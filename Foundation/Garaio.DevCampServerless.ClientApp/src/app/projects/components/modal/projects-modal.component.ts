@@ -27,7 +27,7 @@ export class ProjectsModalComponent implements OnInit {
 
   getTechnologyName(technologyKey: string): string | undefined {
     if (this.technologies) {
-      const tech = this.technologies.find(t => t.rowKey === technologyKey);
+      const tech = this.technologies.find(t => t.entityKey === technologyKey);
       return tech && tech.name;
     }
 

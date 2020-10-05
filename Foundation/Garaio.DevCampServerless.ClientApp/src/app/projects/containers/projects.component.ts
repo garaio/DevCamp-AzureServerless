@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
-import { environment } from 'src/environments/environment';
 import { Subscription, Subject } from 'rxjs';
 import { take, switchMap, tap } from 'rxjs/operators';
 
 import { Project } from '../../shared/models/project.model';
 import { ProjectsModalComponent } from '../components/modal/projects-modal.component';
 import { Technology } from 'src/app/shared/models/technology.model';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-projects',
@@ -28,10 +28,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         class: 'modal-dialog modal-dialog-scrollable'
   };
 
-  constructor(private modalService: MDBModalService, private http: HttpClient) {
+  constructor(private modalService: MDBModalService, private http: HttpClient, private appConfig: AppConfigService) {
     this.gridDataSub = this.loadGridData.pipe(
       tap(_ => this.isLoading$.next(true)),
-      switchMap(_ => this.http.get<Project[]>(`${environment.apiBaseUrl}/projects?code=${environment.apiAuthCode}`)),
+      switchMap(_ => this.http.get<Project[]>(`${this.appConfig.get().api.baseUrl}/projects?code=${this.appConfig.get().api.authCode}`)),
       tap(_ => this.isLoading$.next(false))
     ).subscribe((projects: Project[]) => {
       this.projects = projects;
@@ -41,7 +41,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadGridData.emit(null);
 
-    this.http.get<Technology[]>(`${environment.apiBaseUrl}/technologies?code=${environment.apiAuthCode}`)
+    this.http.get<Technology[]>(`${this.appConfig.get().api.baseUrl}/technologies?code=${this.appConfig.get().api.authCode}`)
     .pipe(take(1))
     .subscribe(t => this.technologies = t);
   }
@@ -61,7 +61,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.modalRef.content.projectData.pipe(
       take(1),
       switchMap((projectData: Project) => {
-        const url = `${environment.apiBaseUrl}/projects?code=${environment.apiAuthCode}`;
+        const url = `${this.appConfig.get().api.baseUrl}/projects?code=${this.appConfig.get().api.authCode}`;
         return this.http.post<Project>(url, projectData);
       })).subscribe((_: any) => this.loadGridData.emit(null));
   }
@@ -76,18 +76,18 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.modalRef.content.projectData.pipe(
       take(1),
       switchMap((projectData: Project) => {
-        const url = `${environment.apiBaseUrl}/projects/${project.rowKey}?code=${environment.apiAuthCode}`;
+        const url = `${this.appConfig.get().api.baseUrl}/projects/${project.entityKey}?code=${this.appConfig.get().api.authCode}`;
         return this.http.put<Project>(url, projectData);
       })).subscribe((_: any) => this.loadGridData.emit(null));
   }
 
   onProjectEdit(project: Project) {
-    const url = `${environment.apiBaseUrl}/projects/${project.rowKey}?code=${environment.apiAuthCode}`;
+    const url = `${this.appConfig.get().api.baseUrl}/projects/${project.entityKey}?code=${this.appConfig.get().api.authCode}`;
     this.http.get<Project>(url).pipe(take(1)).subscribe(p => this.openEditProjectModal(p));
   }
 
   onProjectDelete(project: Project) {
-    const url = `${environment.apiBaseUrl}/projects/${project.rowKey}?code=${environment.apiAuthCode}`;
+    const url = `${this.appConfig.get().api.baseUrl}/projects/${project.entityKey}?code=${this.appConfig.get().api.authCode}`;
     this.http.delete(url).pipe(take(1)).subscribe(_ => this.loadGridData.emit(null));
   }
 }

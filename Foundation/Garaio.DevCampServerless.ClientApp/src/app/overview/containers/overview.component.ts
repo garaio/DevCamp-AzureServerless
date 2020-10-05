@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
 import { tap, switchMap, map } from 'rxjs/operators';
 
+import { AppConfigService } from 'src/app/app-config.service';
 import { SearchResult, SearchResultType } from 'src/app/shared/models/search-result.model';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-overview',
@@ -19,8 +19,8 @@ export class OverviewComponent implements OnInit {
   searchResults$: Observable<SearchResult[]>;
   search: EventEmitter<string> = new EventEmitter();
 
-  constructor(private http: HttpClient, private router: Router) {
-    const url = `${environment.apiBaseUrl}/search?code=${environment.apiAuthCode}`;
+  constructor(private http: HttpClient, private router: Router, private appConfig: AppConfigService) {
+    const url = `${this.appConfig.get().api.baseUrl}/search?code=${this.appConfig.get().api.authCode}`;
 
     this.searchResults$ = this.search.pipe(
       tap(_ => this.isLoading$.next(true)),

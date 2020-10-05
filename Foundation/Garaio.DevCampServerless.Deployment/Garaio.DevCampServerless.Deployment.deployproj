@@ -32,5 +32,8 @@
       <Visible>False</Visible>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="pipelines\" />
+  </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
