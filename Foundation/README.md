@@ -21,5 +21,7 @@ This Demo UI consumes all API methods provided by the Service Function App and a
 ![DataModel](./Resources/DataModel.png)
 
 # Deployment
-Make sure [Azure PowerShell](https://github.com/Azure/azure-powershell#installation) is installed on your device and run script `Garaio.DevCampServerless.Deployment\Deploy-WithLogin.ps1`.
-For subsequent deployments it is recommendet to open `Windows PowerShell ISE` and run `Garaio.DevCampServerless.Deployment\Deploy-AzTemplate.ps1` directly with existing authentication context and selection of subscription.
+Follow [this manual](./Setup/Manual.md) which establishes:
+1. Setup of an Azure DevOps project with a fork of the given repository. You may use this to save the solutions you implemented.
+1. Authorize and link the DevOps project with your Azure Subscription.
+1. Creation of a pipeline which completely deployes the application to your Azure Subscription. You can use this anytime to create additonal environments or update/reset an existing environment.

@@ -11,10 +11,8 @@ The pure Azure related challenges can be realized directly in the [Portal](https
 - [Power Query M function reference](https://docs.microsoft.com/en-us/powerquery-m/power-query-m-function-reference)
 
 # Deploy lab to your Azure environment
-1. Clone the repository to your local system with [Azure PowerShell](https://github.com/Azure/azure-powershell#installation) installed
-1. Run this PowerShell script which provides a guided installation into your subscription: [`Foundation\Garaio.DevCampServerless.Deployment\Deploy-WithLogin.ps1`](../Foundation/Garaio.DevCampServerless.Deployment/Deploy-WithLogin.ps1). You have to enter a suffix to be appended to the name of all Azure services and its URL's which have to be unique. It is recommended to use an abbreviation of your name (e.g. John Wayne -> jwa).
-1. Wait some minutes after the deployment completed (the functions are automatically built and provisionioned)
-1. The components including the function's API is ready to use and the demo-application is available composing this URL: **`https://gadcssa{YOUR-SUFFIX}.z6.web.core.windows.net`**
+1. Follow [this setup manual](../Foundation/Setup/Manual.md)
+1. After the pipeline has been executed successfully, the components including the function's API is ready to use and the demo-application is available composing this URL: **`https://grodcssa{YOUR-SUFFIX}.z6.web.core.windows.net`**
 
 _Note: The URL looks different when you deploy to another Azure Region. In case of any troubles navigate to your Storage Account in the Portal and use the URL displayed in the section "Static website"_
 

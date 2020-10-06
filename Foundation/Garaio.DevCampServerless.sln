@@ -5,19 +5,20 @@ VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "Garaio.DevCampServerless.Deployment", "Garaio.DevCampServerless.Deployment\Garaio.DevCampServerless.Deployment.deployproj", "{2DD5C10F-EE75-47EB-A381-C2AFD6E4BB44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Garaio.DevCampServerless.ServiceFuncApp", "Garaio.DevCampServerless.ServiceFuncApp\Garaio.DevCampServerless.ServiceFuncApp.csproj", "{D64669CB-0AAF-4B32-8C84-1233F8B05CA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garaio.DevCampServerless.ServiceFuncApp", "Garaio.DevCampServerless.ServiceFuncApp\Garaio.DevCampServerless.ServiceFuncApp.csproj", "{D64669CB-0AAF-4B32-8C84-1233F8B05CA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5D9544C-C73C-4CAE-BC06-054109772615}"
 	ProjectSection(SolutionItems) = preProject
 		Resources\Architecture.drawio = Resources\Architecture.drawio
 		Resources\Components.png = Resources\Components.png
 		Resources\DataModel.png = Resources\DataModel.png
+		Setup\Manual.md = Setup\Manual.md
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Garaio.DevCampServerless.EmulatorFuncApp", "Garaio.DevCampServerless.EmulatorFuncApp\Garaio.DevCampServerless.EmulatorFuncApp.csproj", "{72BF44E1-8490-413E-948A-0EC52E7B5D68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garaio.DevCampServerless.EmulatorFuncApp", "Garaio.DevCampServerless.EmulatorFuncApp\Garaio.DevCampServerless.EmulatorFuncApp.csproj", "{72BF44E1-8490-413E-948A-0EC52E7B5D68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Garaio.DevCampServerless.Common", "Garaio.DevCampServerless.Common\Garaio.DevCampServerless.Common.csproj", "{BDE6A802-759B-48AD-BA85-F2D2AA4455DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Garaio.DevCampServerless.Common", "Garaio.DevCampServerless.Common\Garaio.DevCampServerless.Common.csproj", "{BDE6A802-759B-48AD-BA85-F2D2AA4455DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

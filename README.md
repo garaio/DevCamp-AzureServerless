@@ -9,14 +9,22 @@ Providing customers with a solution based on Azure Services at a professional le
 ![](./Resources/LabArchitecture.png)
 
 # General Preparations
+## Azure Subscription
 You need to have your own Azure subscription to work with this lab. As a GARAIO employee you have these two possibilities for a subscription with sufficient budget:
 - MSDN Subscription: Go to http://my.visualstudio.com/benefits
 - Microsoft Azure Pass (ask DevCamp organisator for a Promo Code): Go to https://www.microsoftazurepass.com/
 
 By default, the MSDN-based subscription is tied to the organisation tenant. You can transfer it to a private directory to not pollute the organisations AD with e.g. App Registrations: [Manual](./Resources/Preparation_MSDN-Subscription.md).
 
+## Azure DevOps
+To setup the prepared application you need an Azure DevOps account/organisation with the same user account that you use for the Azure Portal with your Subscription.
+
+You can easily create a new account or add a private organisation if you use your work account. Start here: https://azure.microsoft.com/en-us/services/devops/
+* `Sign in to Azure DevOps` with your company account (or if you already have an account)
+* `Start free` if you don't yet have a login
+
 # Demo Application
-All code artefacts regarding the basic "Azure Serverless Application" you find in the folder `Foundation`. You can (but don't have to) build your realisations of the challenges based on this. It includes a "on-click-deployable" ARM template with usage as explained in the "Preparation" document of each track.
+All code artefacts regarding the basic "Azure Serverless Application" you find in the folder `Foundation`. You can (but don't have to) build your realisations of the challenges based on this. It includes a completely automated deployment of all Azure resources (as explained in the "Preparation" document of each track).
 
 ![](./Resources/LabDemoUI-Overview.png)
 ![](./Resources/LabDemoUI-Persons.png)
@@ -25,13 +33,13 @@ All code artefacts regarding the basic "Azure Serverless Application" you find i
 
 # Tracks
 ## Dev
-Extend the basic application with additional functionality.
+Extend the basic application with additional functionality. Also includes challenges for the frontend application (JavaScript based).
 
 * [Preparation](./Track-Dev/Preparation.md)
 * [Challenges](./Track-Dev/Challenges.md)
 
 ## DevOps
-Implement an "Infrastructure as Code" solution which enables the deployment to new or existing environments. Additionally you may implement a CI/CD strategy with Azure Pipelines.
+Extend the existing "Infrastructure as Code" artefactes and implement a CI/CD strategy.
 
 * [Preparation](./Track-DevOps/Preparation.md)
 * [Challenges](./Track-DevOps/Challenges.md)

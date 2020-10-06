@@ -24,8 +24,7 @@ It is not required that your solution includes everything (e.g. Binaries for Fun
 CLI / PowerShell, Resource Manager
 
 ## Hints
-* As a GARAIO employee you see the reference deployment in the Resource Group **`ga-dcs-ref`** in the Azure Portal. You can check the settings or event export the ARM template (on most services or on resource group)
-* The source-code of the functions you find in the directory `Foundation` of this repository
+* As a GARAIO employee you see the reference deployment in the Resource Group **`gro-dcs-ref`** in the Azure Portal. You can check the settings or event export the ARM template (on most services or on resource group)
 * There are some definition files exported and available in the folder `DO01`
 
 # DO02: Continous Deployment
@@ -41,7 +40,7 @@ This may include following aspects:
 DevOps
 
 ## Hints
-You should work with an Azure subscription in your own tenant/directory. If the setup of a Service Connection in DevOps (recently refactored) does not work, you may [follow these instructions](https://docs.microsoft.com/de-de/azure-stack/operator/azure-stack-create-service-principals).
+_(none)_
 
 # DO03: Measure Performance
 ## Goal
