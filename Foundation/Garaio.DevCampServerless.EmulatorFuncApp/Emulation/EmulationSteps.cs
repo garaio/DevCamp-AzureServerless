@@ -42,7 +42,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
         {
             await Configurations.ServiceFuncUrl
             .AppendPathSegment("user")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .GetStringAsync();
 
             return ec;
@@ -54,7 +54,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
 
             await Configurations.ServiceFuncUrl
             .AppendPathSegment("search")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .PostJsonAsync(term);
 
             return ec;
@@ -66,7 +66,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
 
             await Configurations.ServiceFuncUrl
             .AppendPathSegment("search")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .PostJsonAsync(number);
 
             return ec;
@@ -76,7 +76,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
         {
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("technologies")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .GetAsync()
             .ReceiveJson<ICollection<Technology>>();
 
@@ -90,7 +90,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
         {
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("persons")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .GetAsync()
             .ReceiveJson<ICollection<Person>>();
 
@@ -109,7 +109,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
 
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("persons")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .PostJsonAsync(person)
             .ReceiveJson<Person>();
 
@@ -132,7 +132,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
             person = await Configurations.ServiceFuncUrl
             .AppendPathSegment("persons")
             .AppendPathSegment($"{person.RowKey}")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .GetAsync()
             .ReceiveJson<Person>();
 
@@ -152,7 +152,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("persons")
             .AppendPathSegment($"{person.RowKey}")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .PutJsonAsync(person)
             .ReceiveJson<Person>();
 
@@ -169,7 +169,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("persons")
             .AppendPathSegment($"{key}")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .DeleteAsync();
 
             return ec;
@@ -179,7 +179,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
         {
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("projects")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .GetAsync()
             .ReceiveJson<ICollection<Project>>();
 
@@ -197,7 +197,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
 
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("projects")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .PostJsonAsync(project)
             .ReceiveJson<Project>();
 
@@ -220,7 +220,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
             project = await Configurations.ServiceFuncUrl
             .AppendPathSegment("projects")
             .AppendPathSegment($"{project.RowKey}")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .GetAsync()
             .ReceiveJson<Project>();
 
@@ -239,7 +239,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("projects")
             .AppendPathSegment($"{project.RowKey}")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .PutJsonAsync(project)
             .ReceiveJson<Project>();
 
@@ -256,7 +256,7 @@ namespace Garaio.DevCampServerless.EmulatorFuncApp.Emulation
             var result = await Configurations.ServiceFuncUrl
             .AppendPathSegment("projects")
             .AppendPathSegment($"{key}")
-            .SetQueryParams(new { code = Configurations.ServiceFuncKeyEmulator })
+            .SetQueryParams(new { code = Configurations.ServiceFuncKey })
             .DeleteAsync();
 
             return ec;

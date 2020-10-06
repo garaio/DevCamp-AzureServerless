@@ -8,12 +8,6 @@
         "StorageConnectionString": "UseDevelopmentStorage=true",
         "ScheduleExpression": "0 */1 * * * *",
         "ServiceFuncUrl": "https://gro-dcs-service-f-xyz.azurewebsites.net/api",
-        "ServiceFuncUrlLocal": "http://localhost:7071/api",
-        "ServiceFuncKeyEmulator": "",
-        "ServiceFuncKeyClient": "",
-
-        "RepoUrl": "https://github.com/garaio/DevCamp-AzureServerless.git",
-        "RepoBranch": "master",
-        "RepoClientAppPackagePattern": "/raw/{0}/Foundation/Garaio.DevCampServerless.Deployment/blobs/%24web.zip"
+        "ServiceFuncKey": ""
     }
 }

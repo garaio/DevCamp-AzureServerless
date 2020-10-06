@@ -9,36 +9,12 @@
         "resourceNameSuffix": {
             "type": "string",
             "metadata": {
-                "description": "The suffix will be appended to every to every resource name. You have to specify a unique, not yet used, value."
+                "description": "The suffix will be appended to every resource name. You have to specify a unique, not yet used, value."
             }
         },
-        "functionsRepoUrl": {
-            "type": "string",
-            "defaultValue": "https://github.com/garaio/DevCamp-AzureServerless.git"
-        },
-        "functionsRepoBranch": {
-            "type": "string",
-            "defaultValue": "master"
-        },
-        "deploymentType": {
-            "type": "string",
-            "allowedValues": [
-                "initial",
-                "postinitial",
-                "regular"
-            ],
-            "defaultValue": "initial",
-            "metadata": {
-                "description": "This setting allows to handle issues with resource dependencies (e.g. https://stackoverflow.com/questions/59967186)"
-            }
-        },
-        "serviceApiKeyEmulator": {
+        "serviceFuncKeySecret": {
             "type": "securestring",
-            "defaultValue": "78d9b775-6ec8-4a6c-9ca9-f3e1affcd67d"
-        },
-        "serviceApiKeyClient": {
-            "type": "securestring",
-            "defaultValue": "bada7656-1856-47b7-b0e8-c3c48d7a8e3d"
+            "defaultValue": "[base64(newGuid())]"
         }
     },
     "variables": {
@@ -47,25 +23,36 @@
 
         "keyVaultName": "[concat(parameters('resourceNamePrefix'), '-kv', '-', parameters('resourceNameSuffix'))]",
         "keyVaultSecretStorageAccountConnectionString": "storageAccountConnectionString",
+        "keyVaultSecretServiceFuncKeySecret": "serviceFuncKeySecret",
 
         "serviceFuncName": "[concat(parameters('resourceNamePrefix'), '-', 'service-f', '-', parameters('resourceNameSuffix'))]",
-        "serviceFuncProjectPath": "Foundation/Garaio.DevCampServerless.ServiceFuncApp",
+        "serviceFuncPackagePath": "/Garaio.DevCampServerless.ServiceFuncApp.zip",
 
         "emulatorFuncName": "[concat(parameters('resourceNamePrefix'), '-', 'emulator-f', '-', parameters('resourceNameSuffix'))]",
         "emulatorFuncScheduleExpr": "0 */5 6-20 * * 1-6",
-        "emulatorFuncProjectPath": "Foundation/Garaio.DevCampServerless.EmulatorFuncApp",
-
-        "clientAppPackagePattern": "/raw/{0}/Foundation/Garaio.DevCampServerless.Deployment/blobs/%24web.zip",
+        "emulatorFuncPackagePath": "/Garaio.DevCampServerless.EmulatorFuncApp.zip",
 
         "blobContainerConfig": "config",
+        "blobContainerDeployment": "deployment",
+
         "storageAccountName": "[replace(concat(parameters('resourceNamePrefix'), '-', 'sa', '-', parameters('resourceNameSuffix')), '-', '')]",
         "storageAccountBlobs": [
             {
                 "name": "[variables('blobContainerConfig')]",
                 "publicAccess": "None"
+            },
+            {
+                "name": "[variables('blobContainerDeployment')]",
+                "publicAccess": "None"
             }
         ],
-        "storageAccountUri": "[concat('https://', variables('storageAccountName'), '.blob.core.windows.net/')]",
+        "storageAccountFunctionSasParams": {
+            "signedServices": "b",
+            "signedResourceTypes": "o",
+            "signedPermission": "r",
+            "signedExpiry": "2050-01-01T00:00:00Z"
+        },
+        "storageAccountBlobUri": "[concat('https://', variables('storageAccountName'), '.blob.core.windows.net/')]",
 
         "appServicePlanName": "[concat(parameters('resourceNamePrefix'), '-', 'asp', '-', parameters('resourceNameSuffix'))]",
         "appServicePlanSku": {
@@ -77,7 +64,6 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('storageAccountName')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-06-01",
             "location": "[resourceGroup().location]",
             "sku": {
@@ -113,7 +99,6 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "name": "[concat(variables('storageAccountName'), '/default/', variables('storageAccountBlobs')[copyIndex()].name)]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-06-01",
             "properties": {
                 "publicAccess": "[variables('storageAccountBlobs')[copyIndex()].publicAccess]"
@@ -129,7 +114,6 @@
         {
             "type": "Microsoft.OperationalInsights/workspaces",
             "name": "[variables('logAnalyticsWsName')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2020-03-01-preview",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -142,23 +126,21 @@
         {
             "type": "Microsoft.Insights/components",
             "name": "[variables('appInsightsName')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2020-02-02-preview",
             "location": "[resourceGroup().location]",
             "kind": "web",
+            "dependsOn": [
+                "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWsName'))]"
+            ],
             "properties": {
                 "ApplicationId": "[variables('appInsightsName')]",
                 "Application_Type": "web",
                 "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWsName'))]"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWsName'))]"
-            ]
+            }
         },
         {
             "type": "Microsoft.KeyVault/vaults",
             "name": "[variables('keyVaultName')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-09-01",
             "location": "[resourceGroup().location]",
             "tags": {},
@@ -176,7 +158,6 @@
         {
             "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
             "name": "[concat(variables('keyVaultName'), '/Microsoft.Insights/', 'LogAnalytics')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2017-05-01-preview",
             "dependsOn": [
                 "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
@@ -202,9 +183,13 @@
         {
             "type": "Microsoft.KeyVault/vaults/accessPolicies",
             "name": "[concat(variables('keyVaultName'), '/add')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-09-01",
             "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('serviceFuncName'))]",
+                "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+            ],
             "properties": {
                 "accessPolicies": [
                     {
@@ -224,17 +209,11 @@
                         }
                     }
                 ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('serviceFuncName'))]",
-                "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
-            ]
+            }
         },
         {
             "type": "Microsoft.KeyVault/vaults/secrets",
             "name": "[concat(variables('keyVaultName'), '/', variables('keyVaultSecretStorageAccountConnectionString'))]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-09-01",
             "dependsOn": [
                 "[concat('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
@@ -245,9 +224,19 @@
             }
         },
         {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "name": "[concat(variables('keyVaultName'), '/', variables('keyVaultSecretServiceFuncKeySecret'))]",
+            "apiVersion": "2019-09-01",
+            "dependsOn": [
+                "[concat('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('serviceFuncKeySecret')]"
+            }
+        },
+        {
             "type": "Microsoft.Web/serverfarms",
             "name": "[variables('appServicePlanName')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2016-09-01",
             "location": "[resourceGroup().location]",
             "sku": "[variables('appServicePlanSku')]",
@@ -258,11 +247,15 @@
         {
             "type": "Microsoft.Web/sites",
             "name": "[variables('serviceFuncName')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "kind": "functionapp",
             "apiVersion": "2018-11-01",
             "location": "[resourceGroup().location]",
             "scale": null,
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+            ],
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
@@ -292,17 +285,11 @@
             },
             "identity": {
                 "type": "SystemAssigned"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
-            ]
+            }
         },
         {
             "type": "Microsoft.Web/sites/config",
             "name": "[concat(variables('serviceFuncName'), '/appsettings')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-08-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', variables('serviceFuncName'))]",
@@ -317,57 +304,26 @@
                 "DiagnosticServices_EXTENSION_VERSION": "~3",
                 "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
                 "FUNCTIONS_EXTENSION_VERSION": "~3",
-                "PROJECT": "[variables('serviceFuncProjectPath')]",
+                "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]",
+                "WEBSITE_RUN_FROM_PACKAGE": "[concat(variables('storageAccountBlobUri'), variables('blobContainerDeployment'), variables('serviceFuncPackagePath'), '?', listAccountSas(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01', variables('storageAccountFunctionSasParams')).accountSasToken)]",
+                "WEBSITE_CONTENTSHARE": "[variables('serviceFuncName')]",
+                "WEBSITE_TIME_ZONE": "W. Europe Standard Time",
                 "StorageConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('keyVaultSecretStorageAccountConnectionString'))).secretUriWithVersion, ')')]",
                 "ConfigContainerName": "[variables('blobContainerConfig')]"
             }
         },
         {
-            "type": "Microsoft.Web/sites/host/functionKeys",
-            "name": "[concat(variables('serviceFuncName'), '/default/emulator')]",
-            "apiVersion": "2019-08-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites/sourcecontrols', variables('serviceFuncName'), 'web')]"
-            ],
-            "properties": {
-                "name": "emulator",
-                "value": "[parameters('serviceApiKeyEmulator')]"
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/host/functionKeys",
-            "name": "[concat(variables('serviceFuncName'), '/default/client')]",
-            "apiVersion": "2019-08-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites/sourcecontrols', variables('serviceFuncName'), 'web')]"
-            ],
-            "properties": {
-                "name": "client",
-                "value": "[parameters('serviceApiKeyClient')]"
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/sourcecontrols",
-            "name": "[concat(variables('serviceFuncName'), '/web')]",
-            "condition": "[equals(parameters('deploymentType'), 'initial')]",
-            "apiVersion": "2019-08-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites/config', variables('serviceFuncName'), 'appsettings')]"
-            ],
-            "properties": {
-                "repoUrl": "[parameters('functionsRepoUrl')]",
-                "branch": "[parameters('functionsRepoBranch')]",
-                "isManualIntegration": true
-            }
-        },
-        {
             "type": "Microsoft.Web/sites",
             "name": "[variables('emulatorFuncName')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "kind": "functionapp",
             "apiVersion": "2019-08-01",
             "location": "[resourceGroup().location]",
             "scale": null,
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+            ],
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
@@ -390,23 +346,16 @@
             },
             "identity": {
                 "type": "SystemAssigned"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
-            ]
+            }
         },
         {
             "type": "Microsoft.Web/sites/config",
             "name": "[concat(variables('emulatorFuncName'), '/appsettings')]",
-            "condition": "[not(equals(parameters('deploymentType'), 'postinitial'))]",
             "apiVersion": "2019-08-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', variables('emulatorFuncName'))]",
                 "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('keyVaultSecretStorageAccountConnectionString'))]",
-                "[resourceId('Microsoft.Web/sites/host/functionKeys', variables('serviceFuncName'), 'default', 'emulator')]",
-                "[resourceId('Microsoft.Web/sites/host/functionKeys', variables('serviceFuncName'), 'default', 'client')]"
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('keyVaultSecretServiceFuncKeySecret'))]"
             ],
             "properties": {
                 "AzureWebJobsStorage": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('keyVaultSecretStorageAccountConnectionString'))).secretUriWithVersion, ')')]",
@@ -417,32 +366,26 @@
                 "DiagnosticServices_EXTENSION_VERSION": "~3",
                 "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
                 "FUNCTIONS_EXTENSION_VERSION": "~3",
+                "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]",
+                "WEBSITE_RUN_FROM_PACKAGE": "[concat(variables('storageAccountBlobUri'), variables('blobContainerDeployment'), variables('emulatorFuncPackagePath'), '?', listAccountSas(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01', variables('storageAccountFunctionSasParams')).accountSasToken)]",
+                "WEBSITE_CONTENTSHARE": "[variables('emulatorFuncName')]",
                 "WEBSITE_TIME_ZONE": "W. Europe Standard Time",
-                "PROJECT": "[variables('emulatorFuncProjectPath')]",
                 "StorageConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('keyVaultSecretStorageAccountConnectionString'))).secretUriWithVersion, ')')]",
+                "ConfigContainerName": "[variables('blobContainerConfig')]",
                 "ScheduleExpression": "[variables('emulatorFuncScheduleExpr')]",
                 "ServiceFuncUrl": "[concat('https://', variables('serviceFuncName'), '.azurewebsites.net/api')]",
-                "ServiceFuncKeyEmulator": "[parameters('serviceApiKeyEmulator')]",
-                "ServiceFuncKeyClient": "[parameters('serviceApiKeyClient')]",
-                "RepoUrl": "[parameters('functionsRepoUrl')]",
-                "RepoBranch": "[parameters('functionsRepoBranch')]",
-                "RepoClientAppPackagePattern": "[variables('clientAppPackagePattern')]"
-            }
-        },
-        {
-            "type": "Microsoft.Web/sites/sourcecontrols",
-            "name": "[concat(variables('emulatorFuncName'), '/web')]",
-            "condition": "[equals(parameters('deploymentType'), 'initial')]",
-            "apiVersion": "2019-08-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites/config', variables('emulatorFuncName'), 'appsettings')]"
-            ],
-            "properties": {
-                "repoUrl": "[parameters('functionsRepoUrl')]",
-                "branch": "[parameters('functionsRepoBranch')]",
-                "isManualIntegration": true
+                "ServiceFuncKey": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), variables('keyVaultSecretServiceFuncKeySecret'))).secretUriWithVersion, ')')]"
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "api_baseUrl": {
+            "type": "string",
+            "value": "[concat('https://', variables('serviceFuncName'), '.azurewebsites.net/api')]"
+        },
+        "api_authCode": {
+            "type": "string",
+            "value": "[parameters('serviceFuncKeySecret')]"
+        }
+    }
 }
