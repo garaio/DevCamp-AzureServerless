@@ -23,7 +23,7 @@ variables:
   blobContainerDeployment: 'deployment'
   blobContainerFrontend: '\$web'
   armServiceConnection: ${{ parameters.serviceConnectionName }}
-  currentDate: $[format('{0:yyyy-MM-dd}', pipeline.startTime)]
+  currentDate: $[format('{0:yyyy}-{0:MM}-{0:dd}', pipeline.startTime)]
 
   # used for frontend config injection
   api.baseUrl: 'https://$(serviceFuncName).azurewebsites.net/api'
@@ -39,7 +39,7 @@ stages:
   displayName: 'Build'
   dependsOn: []
   jobs:
-    - job: build-functions
+    - job: build_functions
       displayName: "Build Functions"
       pool:
         vimImage: "ubuntu-16.04"
@@ -48,26 +48,24 @@ stages:
           displayName: Restore
           inputs:
             command: restore
-            workingDirectory: '$(solutionDir)'
             projects: |
-              **/*.csproj
-              **/*.deployproj
+              **/$(solutionDir)/**/*.csproj
+              **/$(solutionDir)/**/*.deployproj
 
         - task: DotNetCoreCLI@2
           displayName: Build
           inputs:
-            workingDirectory: '$(solutionDir)'
             projects: |
-              **/*.csproj
-              **/*.deployproj
+              **/$(solutionDir)/**/*.csproj
+              **/$(solutionDir)/**/*.deployproj
             arguments: '--configuration $(buildConfiguration)'
 
         - task: DotNetCoreCLI@2
           displayName: Publish
           inputs:
             command: publish
-            workingDirectory: '$(solutionDir)'
-            projects: '**/*.csproj'
+            projects: |
+              **/$(solutionDir)/**/*.csproj
             arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)'
             publishWebProjects: false
             zipAfterPublish: true
@@ -77,7 +75,7 @@ stages:
           inputs:
             PathtoPublish: '$(build.artifactstagingdirectory)'
 
-    - job: build-frontend
+    - job: build_frontend
       displayName: "Build Frontend"
       pool:
         vimImage: "ubuntu-16.04"
@@ -113,7 +111,7 @@ stages:
   displayName: 'Deploy'
   dependsOn: build
   jobs:  
-    - deployment: deploy-resources
+    - deployment: deploy_resources
       displayName: 'Deploy Resources'
       pool:
         vmImage: 'ubuntu-16.04'
@@ -123,8 +121,7 @@ stages:
           deploy:
             steps:
               - download: current
-                displayName: 'Download Backend'
-                artifact: 'backend'
+                displayName: 'Download Artifact'
         
               - task: AzureCLI@2
                 displayName: 'Create Resource Group'
@@ -182,8 +179,8 @@ stages:
                   inlineScript: |
                     az functionapp keys set --name $(serviceFuncName) --resource-group $(resourceGroupName) --key-name client --key-type functionKeys --key-value $(serviceFuncKeySecret)
     
-    - deployment: deploy-frontend
-      dependsOn: deploy-resources
+    - deployment: deploy_frontend
+      dependsOn: deploy_resources
       displayName: 'Deploy Frontend'
       pool:
         vmImage: 'ubuntu-16.04'

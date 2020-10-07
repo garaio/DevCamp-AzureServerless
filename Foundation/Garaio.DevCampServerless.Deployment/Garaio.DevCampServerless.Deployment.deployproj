@@ -25,13 +25,10 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <Content Include="azuredeploy.parameters.json" />
+    <None Include="azure-pipeline.yml" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
-    <None Include="pipelines\azure-pipeline.yml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="blobs\" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
