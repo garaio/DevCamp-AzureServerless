@@ -6,7 +6,7 @@
 1. [D04 - User management & Authentication](#d04-user-management-&-authentication)
 1. [D05 - Data-integrations](#d05-data-integrations)
 1. [D06 - Data-processing pipeline](#d06-data-processing-pipeline)
-1. [D07 - Event Sourcing & Propagation](#d07-event-sourcing-&-propagation)
+1. [D07 - Event Sourcing & Propagation](#d07-event-sourcing--propagation)
 1. [D08 - Improved SPA-Provisioning](#d08-improved-spa-provisioning)
 1. [D09 - App Configuration](#d09-app-configuration)
 1. [D10 - Client Notifications](#d10-client-notifications)
