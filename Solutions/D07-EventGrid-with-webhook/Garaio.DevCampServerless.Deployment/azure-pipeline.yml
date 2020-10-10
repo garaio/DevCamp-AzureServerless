@@ -1,0 +1,226 @@
+trigger: none
+
+parameters:
+  - name: suffix
+    type: string
+
+  - name: serviceConnectionName
+    type: string
+    default: 'ARM Service Connection'
+
+variables:
+  solutionDir: 'Foundation'
+  frontendFolderName: 'Garaio.DevCampServerless.ClientApp'
+  deploymentFolderName: 'Garaio.DevCampServerless.Deployment'
+  frontendPackageName: 'gro-dcs-client-app'
+  resourceNamePrefix: 'gro-dcs'
+  resourceNameSuffix: ${{ parameters.suffix }}
+  resourceGroupName: '$(resourceNamePrefix)-$(resourceNameSuffix)'
+  resourceLocation: 'westeurope'
+  storageAccountName: 'grodcssa$(resourceNameSuffix)'
+  serviceFuncName: '$(resourceNamePrefix)-service-f-$(resourceNameSuffix)'
+  serviceFuncKeySecret: '$(System.TeamProjectId)'
+  blobContainerDeployment: 'deployment'
+  blobContainerFrontend: '\$web'
+  armServiceConnection: ${{ parameters.serviceConnectionName }}
+  currentDate: $[format('{0:yyyy}-{0:MM}-{0:dd}', pipeline.startTime)]
+
+  # used for frontend config injection
+  api.baseUrl: 'https://$(serviceFuncName).azurewebsites.net/api'
+  api.authCode: '$(serviceFuncKeySecret)'
+
+resources:
+  containers:
+  - container: linux
+    image: ubuntu-16.04
+
+stages:
+- stage: build
+  displayName: 'Build'
+  dependsOn: []
+  jobs:
+    - job: build_functions
+      displayName: "Build Functions"
+      pool:
+        vimImage: "ubuntu-16.04"
+      steps:
+        - task: DotNetCoreCLI@2
+          displayName: Restore
+          inputs:
+            command: restore
+            projects: |
+              **/$(solutionDir)/**/*.csproj
+              **/$(solutionDir)/**/*.deployproj
+
+        - task: DotNetCoreCLI@2
+          displayName: Build
+          inputs:
+            projects: |
+              **/$(solutionDir)/**/*.csproj
+              **/$(solutionDir)/**/*.deployproj
+            arguments: '--configuration $(buildConfiguration)'
+
+        - task: DotNetCoreCLI@2
+          displayName: Publish
+          inputs:
+            command: publish
+            projects: |
+              **/$(solutionDir)/**/*.csproj
+            arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)'
+            publishWebProjects: false
+            zipAfterPublish: true
+
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact'
+          inputs:
+            PathtoPublish: '$(build.artifactstagingdirectory)'
+
+    - job: build_frontend
+      displayName: "Build Frontend"
+      pool:
+        vimImage: "ubuntu-16.04"
+
+      steps:
+      - task: Npm@1
+        displayName: 'Install Packages'
+        inputs:
+          command: ci
+          workingDir: '$(solutionDir)/$(frontendFolderName)'
+          verbose: false
+
+      - task: Npm@1
+        displayName: Build
+        inputs:
+          command: custom
+          workingDir: '$(solutionDir)/$(frontendFolderName)'
+          verbose: false
+          customCommand: 'run build'
+
+      - task: CopyFiles@2
+        displayName: 'Copy Dist'
+        inputs:
+          SourceFolder: '$(solutionDir)/$(frontendFolderName)/dist/$(frontendPackageName)'
+          TargetFolder: '$(build.artifactstagingdirectory)/$(frontendFolderName)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact'
+        inputs:
+          PathtoPublish: '$(build.artifactStagingDirectory)'
+  
+- stage: deploy
+  displayName: 'Deploy'
+  dependsOn: build
+  jobs:  
+    - deployment: deploy_resources
+      displayName: 'Deploy Resources'
+      pool:
+        vmImage: 'ubuntu-16.04'
+      environment: 'DEV'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: current
+                displayName: 'Download Artifact'
+        
+              - task: AzureCLI@2
+                displayName: 'Create Resource Group'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az group create --location $(resourceLocation) --name $(resourceGroupName) --tags 'DeployedAt=$(currentDate)' 'DeployedBy=$(Build.RequestedFor)' 'DeployedFrom=$(System.TeamProject)'
+
+              - task: AzureCLI@2
+                displayName: 'Create Storage Account for Artifact'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az storage account create --name $(storageAccountName) --resource-group $(resourceGroupName)
+    
+              - task: AzureCLI@2
+                displayName: 'Create Storage Container'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az storage container create --name $(blobContainerDeployment) --account-name $(storageAccountName) --resource-group $(resourceGroupName)
+    
+              - task: AzureCLI@2
+                displayName: 'Copying to Storage Container'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az storage blob upload-batch -s $(Pipeline.Workspace)/drop -d $(blobContainerDeployment) --account-name $(storageAccountName)
+    
+              - task: AzureResourceGroupDeployment@2
+                displayName: 'Deploy ARM Template (ResourceGroup)'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  resourceGroupName: '$(resourceGroupName)'
+                  templateLocation: 'Linked artifact'
+                  location: '$(resourceLocation)'
+                  csmFile: '$(Pipeline.Workspace)/drop/$(deploymentFolderName)/azuredeploy.json'
+                  csmParametersFile: '$(Pipeline.Workspace)/drop/$(deploymentFolderName)/azuredeploy.parameters.json'
+                  overrideParameters: '-resourceNamePrefix "$(resourceNamePrefix)" -resourceNameSuffix "$(resourceNameSuffix)" -serviceFuncKeySecret "$(serviceFuncKeySecret)"'
+              
+              - task: AzureCLI@2
+                displayName: 'Set Function Key'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az functionapp keys set --name $(serviceFuncName) --resource-group $(resourceGroupName) --key-name client --key-type functionKeys --key-value $(serviceFuncKeySecret)
+    
+    - deployment: deploy_frontend
+      dependsOn: deploy_resources
+      displayName: 'Deploy Frontend'
+      pool:
+        vmImage: 'ubuntu-16.04'
+      environment: 'DEV'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureCLI@2
+                displayName: 'Create Storage Container'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az storage container create --name '$web' --account-name $(storageAccountName) --resource-group $(resourceGroupName)
+    
+              - task: FileTransform@1
+                displayName: 'Inject Environment Configurations'
+                inputs:
+                  folderPath: '$(Pipeline.Workspace)/drop/$(frontendFolderName)/assets'
+                  fileType: json
+                  targetFiles: config.json
+    
+              - task: AzureCLI@2
+                displayName: 'Copying to Storage'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az storage blob upload-batch -s $(Pipeline.Workspace)/drop/$(frontendFolderName) -d $(blobContainerFrontend) --account-name $(storageAccountName)
+    
+              - task: AzureCLI@2
+                displayName: ' Set static website'
+                inputs:
+                  azureSubscription: '$(armServiceConnection)'
+                  scriptType: bash
+                  scriptLocation: inlineScript
+                  inlineScript: |
+                    az storage blob service-properties update --account-name $(storageAccountName) --static-website --index-document index.html
+    
+    
