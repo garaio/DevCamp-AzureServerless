@@ -13,6 +13,7 @@ Microsoft provided a simple test application which provides a WebHook URL. You g
 
 # Implementation
 ## Deployment
+Note: It includes a filter on the subscription for example purpose. You may remove or adjust the `advancedFilters` object.
 ```json
 {
     "type": "Microsoft.EventGrid/topics",
@@ -87,6 +88,15 @@ Microsoft provided a simple test application which provides a WebHook URL. You g
     "dependsOn": [
         "[resourceId('Microsoft.EventGrid/topics', variables('eventGridTopicName'))]"
     ]
+}
+```
+
+And its references in app-settings of function:
+```json
+{
+	...
+    "EventGridTopicEndpoint": "[reference(resourceId('Microsoft.EventGrid/topics', variables('eventGridTopicName'))).endpoint]",
+    "EventGridTopicKey": "[listKeys(resourceId('Microsoft.EventGrid/topics', variables('eventGridTopicName')), '2020-04-01-preview').key1]"
 }
 ```
 
